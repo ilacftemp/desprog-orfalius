@@ -1,10 +1,10 @@
-Título
+Método de Karatsuba
 ======
 
-Subtítulo
+Projeto de Desafios da Programação
 ---------
 
-Para criar um parágrafo, basta escrever um texto contínuo, sem pular linhas.
+Todos conhecemos o método tradicional de multiplicação, que aprendemos ainda quando crianças. O método de Karatsuba é uma nova forma de multiplicar que diminui a quantidade total de operações e a complexidade durante a multiplicação de número grandes.
 
 Você também pode criar
 
