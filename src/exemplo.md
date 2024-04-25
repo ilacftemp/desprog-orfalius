@@ -73,25 +73,25 @@ Considerando a multiplicação entre os números 1234 e 5678:
 Primeira recursão:
 
 |    primeiro valor   |
-|----------|----------|
-|    12    |    34    |
+|:-------------------:|
+|12      \|        34 |
 
 
 |    segundo valor    |
-|----------|----------|
-|    56    |    78    |
+|:-------------------:|
+|    56    \|    78    |
 
 
 Segunda recursão:
 
-|     primeiro valor   |
-|-----------|----------|
-|  1  |  2  |  3  |  4 |
+|              primeiro valor               |
+|:--------:|:--------:|:--------:|:--------:|
+|    1    \|    2    \|    3    \|    4     |
 
 
-|    segundo valor     |
-|-----------|----------|
-|  5  |  6  |  7  |  8 |
+|              seguundo valor               |
+|:--------:|:--------:|:--------:|:--------:|
+|    5    \|    6    \|    7    \|    8     |
 
 
 Agora que os dígitos estão separados individualmente, multiplicamos os correspondentes um pelo outro:
@@ -101,9 +101,11 @@ Segunda multiplicação: $$2*6 = 12$$
 Terceira multiplicação: $$3*7 = 21$$
 Quarta multiplicação: $$4*8 = 32$$
 
+
+
 ???
 
-A fórmula que define como é feito um cálculo usando esse método 
+
 
 Você também pode criar
 
