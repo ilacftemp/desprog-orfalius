@@ -16,7 +16,7 @@ Analisando operações de uma multiplicação tradicional
 
 Para multiplicar dois números grandes um pelo outro, sempre utilizamos o método tradicional:
 
-??? Exemplo
+??? Exemplo 1
 
 Considerando os números 1234 e 5678:
 
@@ -56,7 +56,7 @@ $$y=y_1*10+y_0$$
 
 Usando recursão, o método de Karatsuba divide os número na metade, separando seus dígitos
 
-??? Exemplo
+??? Exemplo 2
 
 O número 12345678 seria dividido em 1234 e 5678.
 
@@ -66,7 +66,7 @@ O número 48347 seria dividido em **48 e 347.(?)**
 
 Essa divisão é feita diversas vezes ao longo da recursão, até que cada dígito esteja sozinho e possa ser multiplicado individualmente com o dígito correspondente (por posição) do outro valor (o que vai ser multiplicado pelo primeiro).
 
-??? Exemplo
+??? Exemplo 3
 
 Considerando a multiplicação entre os números 1234 e 5678:
 
@@ -89,23 +89,40 @@ Segunda recursão:
 |    1    \|    2    \|    3    \|    4     |
 
 
-|              seguundo valor               |
+|              segundo valor                |
 |:--------:|:--------:|:--------:|:--------:|
 |    5    \|    6    \|    7    \|    8     |
 
 
-Agora que os dígitos estão separados individualmente, multiplicamos os correspondentes um pelo outro:
+Agora que os dígitos estão separados individualmente, multiplicamos os correspondentes um pelo outro (imagine que cada multiplição das abaixo ocorre quando uma recursão chega à base, portanto elas não são simultâneas):
 
-Primeira multiplicação: $$1*5 = 5$$
-Segunda multiplicação: $$2*6 = 12$$
-Terceira multiplicação: $$3*7 = 21$$
-Quarta multiplicação: $$4*8 = 32$$
+Primeira multiplicação (a): $1*5 = 5$
 
+Segunda multiplicação (b): $2*6 = 12$
 
+Terceira multiplicação \(c\): $3*7 = 21$
+
+Quarta multiplicação (d): $4*8 = 32$
+
+Utilizando os nomes acima, atribuídos a cada resultado, o comportamento do método ao começar a retornar da base segue o modelo
+
+$$a*c*10^{2m}+[y - (a*c) - (b*d)]*10^m+b*d$$
+
+onde $m=n/2$, sendo n a quantidade de dígitos do número (a qual varia dependendo da altura em que estamos na árvore binária) e **y é um resultado que veremos um pouco mais para frente.**
 
 ???
 
+!!! *AVISOOOOO*
+A parte com menos dígitos pode ser preenchida com zeros à esquerda para manter a consistência do método de Karatsuba. Depois de realizar os cálculos recursivos, os zeros adicionados não afetarão o resultado final.
 
+Por exemplo, se tivermos os números x=1234
+x=1234 e y=567, podemos dividir x em 12 e 34 (3 e 2 dígitos) e y em 0 e 567 (1 e 3 dígitos). Depois, preenchemos o 0 à esquerda em y para torná-lo consistente: y=0567. Em seguida, realizamos os cálculos recursivos normalmente.
+!!!
+
+Voltando ao y
+-------------
+
+No exemplo 3, mencionamos um y misterioso e garantimos que voltaríamos para ele no futuro. Esse y representa o resultado da função recursiva que vem após todas as iniciais (que dividem os número em dígitos até chegar a base em que n (quantidade de dígitos) é 1), em que, em vez de entregar os dois número e a quantidade de dígitos, como feito nas outras chamadas, enviamos como primeiro argumento $a+b$, segundo argumento $c+d$ e terceiro argumento $m+1$. Dessa forma, **blablabla completar aqui**
 
 Você também pode criar
 
