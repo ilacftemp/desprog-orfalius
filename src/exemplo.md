@@ -124,6 +124,15 @@ Voltando ao y
 
 No exemplo 3, mencionamos um y misterioso e garantimos que voltaríamos para ele no futuro. Esse y representa o resultado da função recursiva que vem após todas as iniciais (que dividem os número em dígitos até chegar a base em que n (quantidade de dígitos) é 1), em que, em vez de entregar os dois número e a quantidade de dígitos, como feito nas outras chamadas, enviamos como primeiro argumento $a+b$, segundo argumento $c+d$ e terceiro argumento $m+1$. Dessa forma, **blablabla completar aqui**
 
+Aplicações para o método de Karatsuba
+-------------------------------------
+
+Certo, já entendemos como funciona o algortimo, mas resta a pergunta: por quê usaríamos ele em vez do método tradicional? Comentamos que esse método de multiplicação garante uma complexidade e, portanto, uso de memória menor e uma maior velocidade de operação. 
+
+Essas características podem ser muito valorizadas em áreas como a de criptografia assimétrica, onde frequentemente ocorre a multiplicação de números primos grandes; ou também em processamento de sinais digitais (DSP), que envolve multiplicação de polinômios ou convolução de sequência de dados; também em computação científica, que requer simulações computacionais ou modelagem matemática com números grandes e de alta precisão; e em inteligência artificial, que envolve algoritmos de aprendizado de máquina, por vezes com redes neurais profundas ou outras estruturas complexas que frequentemente envolvem multiplicação de matrizes grandes.
+
+Todas essas (e outras) áreas podem se beneficiar de implementações eficientes de operações de multiplicação, que reduz a quantidade de operações intermediárias, o que faz com que o método de Karatsuba seja muito utilizado.
+
 Você também pode criar
 
 1. listas;
