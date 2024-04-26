@@ -148,6 +148,30 @@ def karatsuba(u, v, n):
         return x
 ```
 
+??? Exemplos de chamada da funçâo
+
+``` py
+x = 1937
+y = 2008
+result = karatsuba(x, y, 4)
+print(f"The product of {x} and {y} is: {result}")
+```
+
+``` py
+x = 123
+y = 12345
+result = karatsuba(x, y, 5)
+print(f"The product of {x} and {y} is: {result}")
+```
+
+!!! Atenção
+
+Sempre enviamos, na chamada inicial da função, o maior $n$ entre os dois valores a serem multiplicados. O p´roprio código já lida naturalmente com os casos em que os números têm quantidades diferentes de dígitos.
+
+!!!
+
+???
+
 ??? Pergunta
 Você deve ter notado que a condição de base (``` py if n<= 3 ```) não deixa que o código chegue até a base (dividir o número original até terem apenas 1 dígito). Tente entender o por quê desse valor ser 3 em vez de 1.
 
