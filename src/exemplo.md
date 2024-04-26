@@ -12,7 +12,7 @@ Analisando operações de uma multiplicação tradicional
 
 Para multiplicar dois números grandes um pelo outro, sempre utilizamos o método tradicional:
 
-??? Exemplo 1
+??? Exemplo
 
 Considerando os números 1234 e 5678:
 
@@ -50,19 +50,15 @@ Partindo para o funcionamento do método de Karatsuba por divisão e conquista
 $$x=x_1*10+x_0$$
 $$y=y_1*10+y_0$$
 
-Usando recursão, o método de Karatsuba divide os número na metade, separando seus dígitos
+Usando recursão, o método de Karatsuba divide os números na metade, separando seus dígitos diversas vezes, até que cada dígito esteja sozinho (base da recursão) e possa ser multiplicado individualmente com o dígito correspondente (por posição) do segundo valor.
 
-??? Exemplo 2
+??? Exemplo
 
 O número 12345678 seria dividido em 1234 e 5678.
 
 O número 48347 seria dividido em **48 e 347.(?)**
 
-???
-
-Essa divisão é feita diversas vezes ao longo da recursão, até que cada dígito esteja sozinho e possa ser multiplicado individualmente com o dígito correspondente (por posição) do outro valor (o que vai ser multiplicado pelo primeiro).
-
-??? Exemplo 3
+___
 
 Considerando a multiplicação entre os números 1234 e 5678:
 
@@ -89,6 +85,7 @@ Segunda recursão:
 |:--------:|:--------:|:--------:|:--------:|
 |    5    \|    6    \|    7    \|    8     |
 
+___
 
 Agora que os dígitos estão separados individualmente, multiplicamos os correspondentes um pelo outro (imagine que cada multiplição das abaixo ocorre quando uma recursão chega à base, portanto elas não são simultâneas):
 
