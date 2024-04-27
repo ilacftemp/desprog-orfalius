@@ -150,60 +150,41 @@ Recomendamos abrir os calculos caso não tenha acreditado.
 Agora teremos 3 multiplicações de tamanho n/2 ao invés de 4!
 
 
-
-
-Implementação em código
------------------------
-
-``` py
-def karatsuba(u, v, n):
-    if n <= 3:
-        return u*v
-    else:
-        m = n//2
-        a = u//(10**m)
-        b = u % (10**m)
-        c = v//(10**m)
-        d = v % (10**m)
-        ac = karatsuba(a, c, m)
-        bd = karatsuba(b, d, m)
-        y = karatsuba(a+b, c+d, m+1)
-        x = ac*10**(2*m) + (y-ac-bd)*10**m + bd
-        return x
-```
-
-??? Exemplos de chamada da funçâo
-
-``` py
-x = 1937
-y = 2008
-result = karatsuba(x, y, 4)
-print(f"The product of {x} and {y} is: {result}")
-```
-
-``` py
-x = 123
-y = 12345
-result = karatsuba(x, y, 5)
-print(f"The product of {x} and {y} is: {result}")
-```
-
-!!! Atenção
-
-Sempre enviamos, na chamada inicial da função, o maior $n$ entre os dois valores a serem multiplicados. O p´roprio código já lida naturalmente com os casos em que os números têm quantidades diferentes de dígitos.
-
-!!!
-
-???
-
 ??? Pergunta
-Você deve ter notado que a condição de base (``` py if n<= 3 ```) não deixa que o código chegue até a base (dividir o número original até terem apenas 1 dígito). Tente entender o por quê desse valor ser 3 em vez de 1.
-
+Como ficaria o código em C atualizado agora?
 ::: Gabarito
-Essa diferença ocorre pois números com três dígitos já são pequenos o suficiente para não gastar uma quantidade significativa de tempo ou memória ao serem multiplicados. Porém, esse valor pode ser modificado sem problemas e, se quisermos chegar até a base, é só substituí-lo por 1.
+
+``` c
+int karatsuba(int x, int y, int n) {
+    if (n == 1) {
+        return x * y;
+    }
+    
+    int x1 = x / pow(10, n/2);
+    int x0 = x % pow(10, n/2);
+    int y1 = y / pow(10, n/2);
+    int y0 = y % pow(10, n/2);
+    
+    int x1y1 = karatsuba(x1, y1, n / 2);
+    int x0y0 = karatsuba(x0, y0, n / 2);
+    int k = karatsuba((x1 + x0), (x0 + y0), n/2 + 1);
+    
+    return x1y1*pow(10, n) +(k - x1y1 - x0y0)*pow(10, n/2) + x0y0;
+}
+```
+
 :::
 
 ???
+
+Nossa nova árvore binária seria:
+![](3.png)
+
+A complexidade desse algoritmo é calculada através do [teorema mestre das recorrências de divisão e conquista](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)). Você não precisa entender esse teorema, apenas saber que algoritmos de divisão e conquista cuja recorrência se encaixa no padrão abaixo já tem sua complexidade calculada. $$T(n) = a*T(n/b) + f(n)$$
+
+No nosso caso, observando o primeiro "andar" da árvore binária, notamos que o Algoritmo de Karatsuba tem a seguinte recorrência: $$T(n) = 3*T(n/2) + n$$
+
+Logo, a complexidade é $$O(n^{log2(3)}) ≈ O(n^{1.58})$$
 
 
 
