@@ -1,48 +1,54 @@
-Método de Karatsuba
+Método de Karatsuba para Multiplicações
 ======
 
-Projeto de Desafios da Programação
----------
 
-Todos conhecemos o método tradicional de multiplicação, que aprendemos ainda quando crianças. O método de Karatsuba é uma nova forma de multiplicar que diminui a quantidade total de operações e a complexidade durante a multiplicação de número grandes.
+Utilizamos multiplicações em nossos programas quase todos os dias, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, existem algoritmos responsáveis por esse trabalho.
 
 
-Analisando operações de uma multiplicação tradicional
+Algoritmo de multiplicação ordinária
 -----------------------------------------------------
 
-Para multiplicar dois números grandes um pelo outro, sempre utilizamos o método tradicional:
+Nosso algoritmo ordinário utilizará a mesma idéia de multiplicação que utilizamos quando calculamos no papel:
 
 ??? Exemplo
 
-Considerando os números 1234 e 5678:
+Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso n = 5):
 
-Primeiro multiplicamos o dígito menos significativo do segundo número por cada dígito do primeiro número, multiplicando cada um por sua dezena:
+$$
+\begin{array}{r}
+  1234 \\
+\underline{\times \quad 5678} \\
+\phantom{0000}
+\end{array}
+$$
 
-$$8*4=32$$
-$$8*30=240$$
-$$8*200=1600$$
-$$8*1000=8000$$
-Soma de todas as multiplicações:
-$$32 + 240 + 1600 + 8000 = 9872$$
+Primeiro multiplicamos o dígito menos significativo do segundo número por cada dígito do primeiro número:
 
-Agora multiplicamos o penúltimo dígito menos significativo com seu valor de dezena pelo primeiro número da mesma forma que fizemos com o menos significativo:
+$$
+\begin{array}{r}
+  1234 \\
+\underline{\times \quad 5678} \\
+  9872
+\end{array}
+$$
+Definiremos nossas operações atômicas como somas e multiplicações, logo temos nesse primeiro passo n multiplicações, ou seja, n operações atômicas.
 
-$$70*4=280$$
-$$70*30=2100$$
-$$70*200=14000$$
-$$70*1000=70000$$
-Soma de todas as multiplicações:
-$$280+2100+14000+70000=86380$$
+Repetindo o mesmo processo para os próximos algarismos temos:
 
-E assim por diante com cada dígito do segundo valor. No final, somamos os resultados das somas de cada grupo de multiplicações e obtemos o resultado final.
-
-$$9872+86380+740400+510170000=511006572$$
-
-**TA TUDO ERRADO :(( DPS A GNT DESCOBRE ONDE EU FIZ UM ERRO ESTÚPIDO**
-
-Deu **tal** quantidade de operações (todas somas)
+$$
+\begin{array}{r}
+1234\\
+\underline{\times \quad 5678} \\
+   9872\\
+  8632\phantom{0}\\
+ 7404\phantom{00}\\
+6170\phantom{000}\\
+\end{array}
+$$
 
 ???
+
+
 
 Partindo para o funcionamento do método de Karatsuba por divisão e conquista
 ----------------------------------------------------
