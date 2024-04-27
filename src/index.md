@@ -131,6 +131,22 @@ Voltando ao y
 
 No exemplo 3, mencionamos um y misterioso e garantimos que voltaríamos para ele no futuro. Esse y representa o resultado da função recursiva que vem após todas as iniciais (que dividem os número em dígitos até chegar a base em que n (quantidade de dígitos) é 1), em que, em vez de entregar os dois número e a quantidade de dígitos, como feito nas outras chamadas, enviamos como primeiro argumento $a+b$, segundo argumento $c+d$ e terceiro argumento $m+1$. Dessa forma, **blablabla completar aqui**
 
+
+Calculando a complexidade
+-------------------------
+
+Ok, já falamos um monte sobre como a complexidade muda da multiplicação tradicional para a multiplicação por método de Karatsuba e isso é o que faz desse método mais eficiente para números grandes. Mas então, qual é a complexidade desse método?
+
+Para conseguir analisar a complexidade, temos que definir o que é uma operação atômica (básica). No caso estudado, vamos considerar operações básicas adições e multiplicações de dígitos.
+
+Sabemos que se u e v têm n dígitos cada então
+* $u × v$ tem no máximo $2n$ dígitos
+* $u + v$ tem no máximo $n + 1$ dígitos
+
+Portanto, em uma multiplicação do método tradicional, em que temos que multiplicar cada dígito do segundo número por cada dígito do segundo e depois somar os resultados obtidos de cada grupo de multiplicações, teremos $2n^{2}+n$ operações elementares, que é $n$ vezes mais lenta que adição de dois números (tem $n$ operações elementares).
+
+
+
 Implementação em código
 -----------------------
 
@@ -183,19 +199,6 @@ Essa diferença ocorre pois números com três dígitos já são pequenos o sufi
 :::
 
 ???
-
-Calculando a complexidade
--------------------------
-
-Ok, já falamos um monte sobre como a complexidade muda da multiplicação tradicional para a multiplicação por método de Karatsuba e isso é o que faz desse método mais eficiente para números grandes. Mas então, qual é a complexidade desse método?
-
-Para conseguir analisar a complexidade, temos que definir o que é uma operação atômica (básica). No caso estudado, vamos considerar operações básicas adições e multiplicações de dígitos.
-
-Sabemos que se u e v têm n dígitos cada então
-* $u × v$ tem no máximo $2n$ dígitos
-* $u + v$ tem no máximo $n + 1$ dígitos
-
-Portanto, em uma multiplicação do método tradicional, em que temos que multiplicar cada dígito do segundo número por cada dígito do segundo e depois somar os resultados obtidos de cada grupo de multiplicações, teremos $2n^{2}+n$ operações elementares, que é $n$ vezes mais lenta que adição de dois números (tem $n$ operações elementares).
 
 
 
