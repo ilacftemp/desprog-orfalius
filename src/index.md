@@ -31,7 +31,7 @@ $$
   9872
 \end{array}
 $$
-Definiremos nossas operações atômicas como somas e multiplicações, logo temos nesse primeiro passo n multiplicações, ou seja, n operações atômicas.
+Definiremos nossas operações atômicas como somas e multiplicações, logo temos nesse primeiro passo n multiplicações, ou seja, **n** operações atômicas.
 
 Repetindo o mesmo processo para os próximos algarismos temos:
 
@@ -46,104 +46,109 @@ $$
 \end{array}
 $$
 
+Nesse ponto já realizamos pelo menos $n*n = n^2$ operações. Entretanto, além disso, ainda precisamos somar as colunas:
+
+$$
+\begin{array}{r}
+1234\\
+\underline{\times \quad 5678} \\
+   9872\\
+  8632\phantom{0}\\
+ 7404\phantom{00}\\
+\underline{+ \quad 6170\phantom{000}\\} \\
+7006652
+\end{array}
+$$
+
 ???
 
+Com isso, teremos somas entrando na conta do total de operações, mas podemos simplificar que o algoritmo ordinário possui uma complexidade $n^2$, o que não parece muito bom, certo?
 
 
-Partindo para o funcionamento do método de Karatsuba por divisão e conquista
+Dividindo para conquistar
 ----------------------------------------------------
 
-$$x=x_1*10+x_0$$
-$$y=y_1*10+y_0$$
+Karatsuba resolveu dividir os números que serão multiplicados em dois números com a mesma quantidade de algarismos:
 
-Usando recursão, o método de Karatsuba divide os números na metade, separando seus dígitos diversas vezes, até que cada dígito esteja sozinho (base da recursão) e possa ser multiplicado individualmente com o dígito correspondente (por posição) do segundo valor.
+![](quebra.png)
 
-??? Exemplo
+Supondo que cada número possui **n** algarismos:
+$$ x = x_1 \cdot 10^{n/2} + x_0$$
+$$ y = y_1 \cdot 10^{n/2} + y_0$$
 
-O número 12345678 seria dividido em 1234 e 5678.
+portanto:
+$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
-O número 48347 seria dividido em **48 e 347.(?)**
+??? Pergunta
+Qual é o número de operações atômicas nessa operação?
 
-___
-
-Considerando a multiplicação entre os números 1234 e 5678:
-
-Primeira recursão:
-
-|    primeiro valor   |
-|:-------------------:|
-|12      \|        34 |
-
-
-|    segundo valor    |
-|:-------------------:|
-|    56    \|    78    |
-
-
-Segunda recursão:
-
-|              primeiro valor               |
-|:--------:|:--------:|:--------:|:--------:|
-|    1    \|    2    \|    3    \|    4     |
-
-
-|              segundo valor                |
-|:--------:|:--------:|:--------:|:--------:|
-|    5    \|    6    \|    7    \|    8     |
-
-___
-
-Agora que os dígitos estão separados individualmente, multiplicamos os correspondentes um pelo outro (imagine que cada multiplição das abaixo ocorre quando uma recursão chega à base, portanto elas não são simultâneas):
-
-Primeira multiplicação (a): $1*5 = 5$
-
-Segunda multiplicação (b): $2*6 = 12$
-
-Terceira multiplicação \(c\): $3*7 = 21$
-
-Quarta multiplicação (d): $4*8 = 32$
-
-Utilizando os nomes acima, atribuídos a cada resultado, o comportamento do método ao começar a retornar da base segue o modelo
-
-$$a*c*10^{2m}+[y - (a*c) - (b*d)]*10^m+b*d$$
-
-onde $m=n/2$, sendo n a quantidade de dígitos do número (a qual varia dependendo da altura em que estamos na árvore binária) e **y é um resultado que veremos um pouco mais para frente.**
-
-Dessa forma, teríamos nesse caso
-$$5*21*10^{2*(1/2)}+[y-(5*21)-(12*32)]*10^{1/2}+12*32$$
+::: Gabarito
+Teremos 4 multiplicações de números com n/2 algarismos + 3 somas.
+Quando calculamos o total de operações resultantes ignorando as somas teremos:
+$$ 4(n/2)^2  $$
+:::
 
 ???
 
-!!! Observação
+Pela resposta parece que não ganhamos muita coisa não é mesmo? E se tentarmos repetir esses passos recursivamente até que os números possuam apenas 1 algarismo para realizar os produtos?
 
-Sempre supomos que n é par para fazer a divisão (embora o algoritmo já lida com valores ímpares e faz a divisão corretamente). Quando n é ímpar, podemos adicionar um 0 à esquerda, assim temos uma quantidade par de dígitos e já podemos fazer a divisão na metade sem problemas.
+??? Pergunta
+Como seria um esboço em C dessa recursão?
+::: Gabarito
 
-??? Exemplos
-* Para 371: 0371 pode ser divido em 03 e 71
-* Para 5493845: 05493845 pode ser dividido em 0549 e 3845
+``` c
+int karatsuba(int x, int y, int n) {
+    if (n == 1) {
+        return x * y;
+    }
+    
+    int x1 = x / pow(10, n/2);
+    int x0 = x % pow(10, n/2);
+    int y1 = y / pow(10, n/2);
+    int y0 = y % pow(10, n/2);
+    
+    int x1y1 = karatsuba(x1, y1, n / 2);
+    int x0y0 = karatsuba(x0, y0, n / 2);
+    int x1y0 = karatsuba(x1, y0, n / 2);
+    int y1x0 = karatsuba(y1, x0, n / 2);
+    
+    return x1y1*pow(10, n) +(x1y0 + y1x0)*pow(10, n/2) + x0y0;
+}
+```
+
+:::
+
 ???
 
-Depois de realizar os cálculos recursivos, os zeros adicionados não afetarão o resultado final.
-!!!
+Utilizando essa recorrência, podemos ver que a cada recursão teremos 4 chamadas de karatsuba para n/2 e outras n operações atômicas. A árvore ficaria assim:
 
-Voltando ao y
--------------
+![](4.png)
 
-No exemplo 3, mencionamos um y misterioso e garantimos que voltaríamos para ele no futuro. Esse y representa o resultado da função recursiva que vem após todas as iniciais (que dividem os número em dígitos até chegar a base em que n (quantidade de dígitos) é 1), em que, em vez de entregar os dois número e a quantidade de dígitos, como feito nas outras chamadas, enviamos como primeiro argumento $a+b$, segundo argumento $c+d$ e terceiro argumento $m+1$. Dessa forma, **blablabla completar aqui**
+??? Pergunta
+Qual é a complexidade desse código utilizando a árvore como base?
+
+::: Gabarito
+$$ 2n^2 - n $$
+:::
+???
+
+Nossa complexidade continuou sendo da ordem de $n^2$...
+
+![](gatotriste.webp)
 
 
-Calculando a complexidade
--------------------------
+Calma, o famoso matemático Gauss nos ajudou com esse problema:
 
-Ok, já falamos um monte sobre como a complexidade muda da multiplicação tradicional para a multiplicação por método de Karatsuba e isso é o que faz desse método mais eficiente para números grandes. Mas então, qual é a complexidade desse método?
+Chamando de k o seguinte valor:
+$$ k = (x_0 + x_1) \cdot (y_0 + y_1)$$
 
-Para conseguir analisar a complexidade, temos que definir o que é uma operação atômica (básica). No caso estudado, vamos considerar operações básicas adições e multiplicações de dígitos.
+Podemos dizer que
+$$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_1 \cdot y_1 - x_0 \cdot y_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
-Sabemos que se u e v têm n dígitos cada então
-* $u × v$ tem no máximo $2n$ dígitos
-* $u + v$ tem no máximo $n + 1$ dígitos
+Recomendamos abrir os calculos caso não tenha acreditado.
 
-Portanto, em uma multiplicação do método tradicional, em que temos que multiplicar cada dígito do segundo número por cada dígito do segundo e depois somar os resultados obtidos de cada grupo de multiplicações, teremos $2n^{2}+n$ operações elementares, que é $n$ vezes mais lenta que adição de dois números (tem $n$ operações elementares).
+Agora teremos 3 multiplicações de tamanho n/2 ao invés de 4!
+
 
 
 
