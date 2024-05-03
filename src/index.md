@@ -149,9 +149,79 @@ Recomendamos abrir os calculos caso não tenha acreditado.
 
 Agora teremos 3 multiplicações de tamanho n/2 ao invés de 4!
 
+??? Exercício
+
+Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
+$$ x^{2} - x \cdot y $$
+
+::: Gabarito
+
+Se você chegou em duas operações atômicas, pense novamente! Ao fatorar a expressão da seguinte maneira: $$ x\cdot(x - y) $$
+Nós reduzimos a questão a apenas uma multiplicação!
+
+:::
+
+???
+
+??? Exercício
+
+Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
+$$ x^{2} - y^{2} $$
+
+::: Gabarito
+
+Podemos fatorar a expressão da seguinte maneira: $$ (x + y)\cdot(x - y) $$
+Nós reduzimos a questão a apenas uma multiplicação!
+
+:::
+
+???
+
+??? Exercício
+
+Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
+$$ x^{2} - y^{2} $$
+
+::: Gabarito
+
+Podemos fatorar a expressão da seguinte maneira: $$ (x + y)\cdot(x - y) $$
+Nós reduzimos a questão a apenas uma multiplicação!
+
+:::
+
+???
+
+??? Exercício
+
+Considerando que sabemos os valores de $$ x_0, x_1, y_0, y_1 $$Qual é a quantidade mínima de operações atômicas necessárias para calcular 
+$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
+
+::: Gabarito
+
+Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
+Nós reduzimos a questão a apenas duas multiplicações!
+
+:::
+
+???
+
+??? Exercício
+
+Considerando que sabemos os valores de $$ x_0, x_1, y_0, y_1 $$Qual é a quantidade mínima de operações atômicas necessárias para calcular 
+$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
+
+::: Gabarito
+
+Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
+Nós reduzimos a questão a apenas duas multiplicações!
+
+:::
+
+???
 
 ??? Pergunta
 Como ficaria o código em C atualizado agora?
+
 ::: Gabarito
 
 ``` c
