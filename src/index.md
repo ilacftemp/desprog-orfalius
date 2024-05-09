@@ -149,7 +149,7 @@ Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse
 ???
 
 A partir desse resultado, podemos calcular $x \cdot y$:
-$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
+$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
 ??? Pergunta
 Qual é o número de operações atômicas nessa operação?
@@ -192,27 +192,35 @@ Nós reduzimos a equação a apenas uma multiplicação!
 
 ???
 
-Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
-
 ??? Exercício
 
-Suponha que exista um valor k, tal que $$(x_1 \cdot y_0 + y_1 \cdot x_0) =  (k - x_1 \cdot y_1 - x_0 \cdot y_0)$$ como poderiamos obter k com o menor número de multiplicações?
+Suponha que exista um valor k, tal que $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ Obtenha o valor de $(x_1 \cdot y_0 + x_0 \cdot y_1)$ em função de k, $x_0\cdot y_0$ e $x_1\cdot y_1$
 
 
 ::: Gabarito
-Isolando k, temos 
+Abrindo a expressão de k, temos 
 $$k = x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0$$ 
-mas já sabemos que isso é o mesmo que $k = (x_0 + x_1)\cdot(y_0 + y_1)$
+Logo, podemos obter $(x_1 \cdot y_0 + x_0 \cdot y_1)$ da seguinte maneira:
+$$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
+:::
+
+???
+
+??? Exercício
+Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
+Como poderíamos obter $x \cdot y$ a partir dos valores de k, $x_0\cdot y_0$ e $x_1\cdot y_1$? (Lembre-se que não é necessário contar as multiplicações pela base)
+
+::: Gabarito
+
+Do exercício anterior, sabemos que: $$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
+
+Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_0 \cdot y_0 - x_1 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
 :::
 
 ???
 
-Substituindo então na antiga expressão, ficariamos com:
-
-$$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_1 \cdot y_1 - x_0 \cdot y_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
-
-Agora conseguimos realizar apenas 3 multiplicações distintas ao invés de 4!
+Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
 ??? Pergunta
 Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem n/2 dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
