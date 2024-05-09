@@ -6,13 +6,52 @@ Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se
 
 ![](mult.png)
 
+??? Pergunta
+Faça no papel a seguinte conta:
 
-Definindo nossa operação atômica
+$$
+\begin{array}{r}
+  2 \\
+\underline{\times \quad 3} \\
+\phantom{0000}
+\end{array}
+$$
+
+Quantas multiplicações de **um dígito** e somas de **um dígito** foram feitas? a partir desses resultados, quantas operações atômicas foram realizadas?
+::: Gabarito
+O resultado da multiplicação é 6. Foi feita uma multiplicação de um dígito e zero somas de um dígito. Logo, foi realizada uma operação atômica 
+:::
+
+???
+
+??? Pergunta
+Faça no papel a seguinte conta:
+
+$$
+\begin{array}{r}
+  31 \\
+\underline{\times \quad 22} \\
+\phantom{0000}
+\end{array}
+$$
+
+Quantas multiplicações de **um dígito** e somas de **um dígito** foram feitas?
+::: Gabarito
+O resultado da multiplicação é 682. Foram feitas quatro multiplicação de um dígito e três somas de um dígito. Logo, foram realizadas cinco operações atômicas
+:::
+
+???
+
+Redefinindo nossa operação atômica
 ----------------------------------------------------
 
-Para desenvolvermos a ideia dos algoritmos de multiplicação, é fundamental compreender o custo de cada tipo de operação para o computador. Quando realizamos multiplicações simples entre números de um único algarismo, como, por exemplo, $5 \times 6$, estamos essencialmente somando cinco vezes o número seis ($6 + 6 + 6 + 6 + 6$). Assim, se considerarmos que cada soma tem um custo unitário, para calcular o produto de um número n com um algarismo por outro número m, também com um único algarismo, o custo será igual a n ou m, dependendo de qual dos dois números é o menor, para minimizarmos o número de somas necessárias.
+Apesar dos resultados que acabamos de obter, eles estão errados para o contexto dos algoritmos de multiplicação.
 
-Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências da base através de deslocamentos (shifts), como por exemplo, ao calcular $3 \times 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda.
+Para desenvolvermos a ideia dos algoritmos de multiplicação, é fundamental compreender o custo de cada tipo de operação para o computador. Quando realizamos multiplicações simples entre números de um único algarismo, como, por exemplo, $5 \cdot 6$, estamos essencialmente somando cinco vezes o número seis ($6 + 6 + 6 + 6 + 6$). Assim, se considerarmos que cada soma tem um custo unitário, para calcular o produto de um número n com um algarismo por outro número m, também com um único algarismo, o custo será igual a n ou m, dependendo de qual dos dois números é o menor, para minimizarmos o número de somas necessárias.
+
+Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um valor $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências da base através de deslocamentos (shifts), como por exemplo, ao calcular $3 \cdot 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda, ou, para nós humanos que usamos base 10, basta adicionar um zero no fim do número.
+
+Neste handout, usaremos a base igual a 10, pois esse valor é o que estamos acostumados a usar. No entanto, nos computadores, o algoritmo de Karatsuba é aplicado com bases na forma de potências de 2.
 
 Algoritmo de multiplicação ordinária
 -----------------------------------------------------
@@ -21,7 +60,7 @@ Começaremos entendendo o único algoritmo de multiplicação para números gran
 
 ??? Exemplo
 
-Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso n = 4):
+Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso, n = 4):
 
 $$
 \begin{array}{r}
@@ -75,7 +114,16 @@ $$
 Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
-Relembrando que nossa operação atômica é a multiplicação de algarismos de 1 dígito: Multiplicando o algarismo menos significativo do número de baixo por cada um dos 4 algarismos de cima temos 4 multiplicações, como temos 4 números que realizam esse processo, teremos 4x4 = 16 operações atômicas. Se generalizarmos, teremos $n \times n = n^2$ operações atômicas.
+Relembrando que nossa operação atômica é a multiplicação de algarismos de 1 dígito: Multiplicando o algarismo menos significativo do número de baixo por cada um dos 4 algarismos de cima temos 4 multiplicações, como temos 4 números que realizam esse processo, teremos 4x4 = 16 operações atômicas.
+:::
+
+???
+
+??? Pergunta
+Para um caso geral em que multiplicamos dois números de n dígitos cada, qual será o número operações atômicas nessa operação?
+
+::: Gabarito
+Nesse caso, teremos $n \cdot n = n^2$ operações atômicas.
 :::
 
 ???
@@ -88,7 +136,7 @@ Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicaçã
 ![](quebra.png)
 
 ??? Pergunta
-Supondo que x e y possuam **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
+Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
 
 ::: Gabarito
 
@@ -100,7 +148,7 @@ Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse
 
 ???
 
-portanto:
+A partir desse resultado, podemos calcular $x \cdot y$:
 $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
 ??? Pergunta
