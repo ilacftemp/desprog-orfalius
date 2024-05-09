@@ -2,7 +2,7 @@ Método de Karatsuba para Multiplicações
 ======
 
 
-Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, até 1960, acreditava-se que só era possível ter algoritmos de ordem $n^2$. 
+Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, até o ano de 1960, acreditava-se que só era possível ter algoritmos de multiplicação de ordem de complexidade $n^2$, mas Karatsuba trouxe o primeiro algoritmo que contrariou esse fato.
 
 ![](mult.png)
 
@@ -12,7 +12,7 @@ Definindo nossa operação atômica
 
 Para desenvolvermos a ideia dos algoritmos de multiplicação, é fundamental compreender o custo de cada tipo de operação para o computador. Quando realizamos multiplicações simples entre números de um único algarismo, como, por exemplo, $5 \times 6$, estamos essencialmente somando cinco vezes o número seis ($6 + 6 + 6 + 6 + 6$). Assim, se considerarmos que cada soma tem um custo unitário, para calcular o produto de um número n com um algarismo por outro número m, também com um único algarismo, o custo será igual a n ou m, dependendo de qual dos dois números é o menor, para minimizarmos o número de somas necessárias.
 
-Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências através de deslocamentos (shifts), como por exemplo, ao calcular $3 \times 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda.
+Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências da base através de deslocamentos (shifts), como por exemplo, ao calcular $3 \times 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda.
 
 Algoritmo de multiplicação ordinária
 -----------------------------------------------------
@@ -87,9 +87,18 @@ Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicaçã
 
 ![](quebra.png)
 
-Supondo que x e y possuam **n** algarismos cada e que estão na base 10:
+??? Pergunta
+Supondo que x e y possuam **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
+
+::: Gabarito
+
 $$ x = x_1 \cdot 10^{n/2} + x_0$$
 $$ y = y_1 \cdot 10^{n/2} + y_0$$
+
+Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse caso, completamos o número com 0 à esquerda até completar um número com quantidade par de algarismos, x = 0345, dividindo então em 03 e 45, ou seja, $3\cdot 10^2 + 45$.
+:::
+
+???
 
 portanto:
 $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
@@ -98,9 +107,7 @@ $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot
 Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
-Teremos 4 multiplicações de números com n/2 algarismos.
-Logo, teremos
-$4(n/2)^2  = n^2$ operações atômicas.
+Teremos 4 multiplicações de números com n/2 algarismos. Se quando multiplicamos numeros com n algarismos teremos $n^2$ operações atômicas, ao multiplicarmos números com n/2 algarismos teremos $4(n/2)^2  = n^2$ operações atômicas.
 :::
 
 ???
@@ -131,7 +138,7 @@ Continue sem utilizar as operações atômicas, considere multiplicações norma
 ::: Gabarito
 
 Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
-Nós reduzimos a questão a apenas duas multiplicações!
+Nós reduzimos a equação a apenas uma multiplicação!
 
 :::
 
@@ -176,6 +183,9 @@ Sendo assim, ficaríamos com $3(\frac{n}{2})^2 = \frac{3n^2}{4}$ operações at�
 
 ???
 
+!!!!!!!!!!!!!
+Colocar a partir daqui, a explicação de como funcionaria a recursão e como se chegaria à ordem n elevado a log3 na base 2, sem utilizar tanto o código - RAUL e ILANA
+!!!!!!!!!!!!!
 
 ??? Pergunta
 Como ficaria o código em C atualizado agora?
