@@ -2,17 +2,26 @@ Método de Karatsuba para Multiplicações
 ======
 
 
-Utilizamos multiplicações em nossos programas quase todos os dias, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, existem algoritmos responsáveis por esse trabalho.
+Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, até 1960, acreditava-se que só era possível ter algoritmos de ordem $n^2$. 
 
+![](mult.png)
+
+
+Definindo nossa operação atômica
+----------------------------------------------------
+
+Para desenvolvermos a ideia dos algoritmos de multiplicação, é fundamental compreender o custo de cada tipo de operação para o computador. Quando realizamos multiplicações simples entre números de um único algarismo, como, por exemplo, $5 \times 6$, estamos essencialmente somando cinco vezes o número seis ($6 + 6 + 6 + 6 + 6$). Assim, se considerarmos que cada soma tem um custo unitário, para calcular o produto de um número n com um algarismo por outro número m, também com um único algarismo, o custo será igual a n ou m, dependendo de qual dos dois números é o menor, para minimizarmos o número de somas necessárias.
+
+Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências através de deslocamentos (shifts), como por exemplo, ao calcular $3 \times 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda.
 
 Algoritmo de multiplicação ordinária
 -----------------------------------------------------
 
-Nosso algoritmo ordinário utilizará a mesma idéia de multiplicação que utilizamos quando calculamos no papel:
+Começaremos entendendo o único algoritmo de multiplicação para números grandes que existia até 1960. Nesse algoritmo usa-se a mesma idéia de multiplicação que utilizamos quando calculamos no papel:
 
 ??? Exemplo
 
-Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso n = 5):
+Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso n = 4):
 
 $$
 \begin{array}{r}
@@ -31,7 +40,6 @@ $$
   9872
 \end{array}
 $$
-Definiremos nossas operações atômicas como somas e multiplicações, logo temos nesse primeiro passo n multiplicações, ou seja, **n** operações atômicas.
 
 Repetindo o mesmo processo para os próximos algarismos temos:
 
@@ -40,20 +48,20 @@ $$
 1234\\
 \underline{\times \quad 5678} \\
    9872\\
-  8632\phantom{0}\\
+  8638\phantom{0}\\
  7404\phantom{00}\\
 6170\phantom{000}\\
 \end{array}
 $$
 
-Nesse ponto já realizamos pelo menos $n*n = n^2$ operações. Entretanto, além disso, ainda precisamos somar as colunas:
+Realizando as somas:
 
 $$
 \begin{array}{r}
 1234\\
 \underline{\times \quad 5678} \\
    9872\\
-  8632\phantom{0}\\
+  8638\phantom{0}\\
  7404\phantom{00}\\
 \underline{+ \quad 6170\phantom{000}\\} \\
 7006652
@@ -62,17 +70,24 @@ $$
 
 ???
 
-Com isso, teremos somas entrando na conta do total de operações, mas podemos simplificar que o algoritmo ordinário possui uma complexidade $n^2$, o que não parece muito bom, certo?
 
+??? Pergunta
+Qual é o número de operações atômicas nessa operação?
+
+::: Gabarito
+Relembrando que nossa operação atômica é a multiplicação de algarismos de 1 dígito: Multiplicando o algarismo menos significativo do número de baixo por cada um dos 4 algarismos de cima temos 4 multiplicações, como temos 4 números que realizam esse processo, teremos 4x4 = 16 operações atômicas. Se generalizarmos, teremos $n \times n = n^2$ operações atômicas.
+:::
+
+???
 
 Dividindo para conquistar
 ----------------------------------------------------
 
-Karatsuba resolveu dividir os números que serão multiplicados em dois números com a mesma quantidade de algarismos:
+Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicação ordinária, Karatsuba tentou dividir os números que serão multiplicados em dois números com a mesma quantidade de algarismos:
 
 ![](quebra.png)
 
-Supondo que cada número possui **n** algarismos:
+Supondo que x e y possuam **n** algarismos cada e que estão na base 10:
 $$ x = x_1 \cdot 10^{n/2} + x_0$$
 $$ y = y_1 \cdot 10^{n/2} + y_0$$
 
@@ -83,141 +98,84 @@ $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot
 Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
-Teremos 4 multiplicações de números com n/2 algarismos + 3 somas.
-Quando calculamos o total de operações resultantes ignorando as somas teremos:
-$$ 4(n/2)^2  $$
+Teremos 4 multiplicações de números com n/2 algarismos.
+Logo, teremos
+$4(n/2)^2  = n^2$ operações atômicas.
 :::
 
 ???
 
-Pela resposta parece que não ganhamos muita coisa não é mesmo? E se tentarmos repetir esses passos recursivamente até que os números possuam apenas 1 algarismo para realizar os produtos?
+Pela resposta, concluímos que não tivemos vantagem nessa divisão, pelo menos não ainda:
 
-??? Pergunta
-Como seria um esboço em C dessa recursão?
+??? Exercício
+
+Esquecendo um pouco as operações atômicas, qual é a quantidade mínima de multiplicações necessárias para calcular 
+$$ x_0^{2} - x_0 \cdot y_0 $$
+
 ::: Gabarito
 
-``` c
-int karatsuba(int x, int y, int n) {
-    if (n == 1) {
-        return x * y;
-    }
-    
-    int x1 = x / pow(10, n/2);
-    int x0 = x % pow(10, n/2);
-    int y1 = y / pow(10, n/2);
-    int y0 = y % pow(10, n/2);
-    
-    int x1y1 = karatsuba(x1, y1, n / 2);
-    int x0y0 = karatsuba(x0, y0, n / 2);
-    int x1y0 = karatsuba(x1, y0, n / 2);
-    int y1x0 = karatsuba(y1, x0, n / 2);
-    
-    return x1y1*pow(10, n) +(x1y0 + y1x0)*pow(10, n/2) + x0y0;
-}
-```
+Se você chegou em duas multiplicações, pense novamente! Ao fatorar a expressão da seguinte maneira: $$ x_0\cdot(x_0 - y_0) $$
+Nós reduzimos a equação a apenas uma multiplicação!
 
 :::
 
 ???
 
-Utilizando essa recorrência, podemos ver que a cada recursão teremos 4 chamadas de karatsuba para n/2 e outras n operações atômicas. A árvore ficaria assim:
+??? Exercício
 
-![](4.png)
+Considerando que sabemos os valores de $x_0, x_1, y_0, y_1$. Qual é a quantidade mínima de multiplicações necessárias para calcular 
+$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
 
-??? Pergunta
-Qual é a complexidade desse código utilizando a árvore como base?
+Continue sem utilizar as operações atômicas, considere multiplicações normais.
 
 ::: Gabarito
-$$ 2n^2 - n $$
+
+Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
+Nós reduzimos a questão a apenas duas multiplicações!
+
 :::
+
 ???
 
-Nossa complexidade continuou sendo da ordem de $n^2$...
+Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + y_1 \cdot x_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
-![](gatotriste.webp)
+??? Exercício
+
+Suponha que exista um valor k, tal que $$(x_1 \cdot y_0 + y_1 \cdot x_0) =  (k - x_1 \cdot y_1 - x_0 \cdot y_0)$$ como poderiamos obter k com o menor número de multiplicações?
 
 
-Calma, o famoso matemático Gauss nos ajudou com esse problema:
+::: Gabarito
+Isolando k, temos 
+$$k = x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0$$ 
+mas já sabemos que isso é o mesmo que $k = (x_0 + x_1)\cdot(y_0 + y_1)$
 
-Chamando de k o seguinte valor:
-$$ k = (x_0 + x_1) \cdot (y_0 + y_1)$$
+:::
 
-Podemos dizer que
+???
+
+Substituindo então na antiga expressão, ficariamos com:
+
 $$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_1 \cdot y_1 - x_0 \cdot y_0) \cdot 10^{n/2} + x_0 \cdot y_0 $$
 
-Recomendamos abrir os calculos caso não tenha acreditado.
+Agora conseguimos realizar apenas 3 multiplicações distintas ao invés de 4!
 
-Agora teremos 3 multiplicações de tamanho n/2 ao invés de 4!
-
-??? Exercício
-
-Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
-$$ x^{2} - x \cdot y $$
+??? Pergunta
+Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem n/2 dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
 
 ::: Gabarito
 
-Se você chegou em duas operações atômicas, pense novamente! Ao fatorar a expressão da seguinte maneira: $$ x\cdot(x - y) $$
-Nós reduzimos a questão a apenas uma multiplicação!
+Caso $x_0 + x_1$ e $y_0 + y_1$ continuarem possuindo $n/2$ algarismos, ficaríamos com apenas 3 multiplicações de $n/2$ algarismos:
+
+$$x_1\cdot y_1$$
+$$(x_0 + x_1)\cdot(y_0 + y_1)$$
+$$x_0 \cdot y_0 $$
+
+Sendo assim, ficaríamos com $3(\frac{n}{2})^2 = \frac{3n^2}{4}$ operações atômicas! Já é melhor que $n^2$, não?
 
 :::
 
 ???
 
-??? Exercício
-
-Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
-$$ x^{2} - y^{2} $$
-
-::: Gabarito
-
-Podemos fatorar a expressão da seguinte maneira: $$ (x + y)\cdot(x - y) $$
-Nós reduzimos a questão a apenas uma multiplicação!
-
-:::
-
-???
-
-??? Exercício
-
-Considerando que sabemos os valores de x e y, qual é a quantidade mínima de operações atômicas necessárias para calcular 
-$$ x^{2} - y^{2} $$
-
-::: Gabarito
-
-Podemos fatorar a expressão da seguinte maneira: $$ (x + y)\cdot(x - y) $$
-Nós reduzimos a questão a apenas uma multiplicação!
-
-:::
-
-???
-
-??? Exercício
-
-Considerando que sabemos os valores de $$ x_0, x_1, y_0, y_1 $$Qual é a quantidade mínima de operações atômicas necessárias para calcular 
-$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
-
-::: Gabarito
-
-Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
-Nós reduzimos a questão a apenas duas multiplicações!
-
-:::
-
-???
-
-??? Exercício
-
-Considerando que sabemos os valores de $$ x_0, x_1, y_0, y_1 $$Qual é a quantidade mínima de operações atômicas necessárias para calcular 
-$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
-
-::: Gabarito
-
-Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
-Nós reduzimos a questão a apenas duas multiplicações!
-
-:::
-
-???
 
 ??? Pergunta
 Como ficaria o código em C atualizado agora?
