@@ -87,6 +87,20 @@ Para efeito de complexidade, os valores de $k_$0 e $k_1$ não mudam o fato de qu
 
 ???
 
+??? Pergunta
+
+Durante a operação, você realizou outro tipo de operação sem nem perceber! Você consegue identificar que operação foi essa?
+
+::: Gabarito
+
+Ao multiplicar, note que, para cada dígito multiplicado, você desloca seu resultado uma casa para a esquerda! Basicamente, você faz um shift para esquerda de um dígito, ou seja, você multiplica o resultado de cada multiplicação por potências de dez!.
+
+Para o computador, essas operações são realizadas em tempo $O(n)$. Assim, isso não altera o fato das multiplicações terem complexidade $O(n^{2})$.
+
+:::
+
+???
+
 Dividindo para conquistar
 ----------------------------------------------------
 
@@ -95,7 +109,7 @@ Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicaçã
 ![](quebra.png)
 
 !!!
-Recomendamos que usem papel e caneta para resolver os exercícios.
+Recomendamos que usem papel e caneta para resolver os exercícios. Além disso, nenhuma das questões requer qualquer escrita de código.
 !!!
 
 ??? Pergunta
@@ -185,26 +199,50 @@ Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cd
 
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
+Certo, conseguimos reduzir o número de múltiplicações intermediárias necessárias para calcular a multiplicação. Agora, vamos partir para o cálculo da complexidade do Algoritmo de Karatsuba.
+
 ??? Pergunta
-Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem n/2 dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
+Imagine que você esteja aplicando o Algoritmo de Karatsuba com dois números de 16 dígitos cada. Isso significa que as multiplicações internas terão 8 ou 9 dígitos em cada um dos seus multiplicandos. O que podemos fazer para reduzir o número de dígitos nessas multiplicações?
 
 ::: Gabarito
+Fazemos o algoritmo ser recursivo! Podemos dividir novamente cada número em dois números menores e repetir esta etapa!
 
-Caso $x_0 + x_1$ e $y_0 + y_1$ continuarem possuindo $n/2$ algarismos, ficaríamos com apenas 3 multiplicações de $n/2$ algarismos:
+Qual deverá ser a base dessa recursão?
 
-$$x_1\cdot y_1$$
-$$(x_0 + x_1)\cdot(y_0 + y_1)$$
-$$x_0 \cdot y_0 $$
-
-Sendo assim, ficaríamos com $3(\frac{n}{2})^2 = \frac{3n^2}{4}$ operações atômicas! Já é melhor que $n^2$, não?
-
+::: Gabarito
+A base deve ser n == 1. Paramos aplicar o algoritmo de divisão quando os números tem apenas um dígito e simplesmente retornamos a multiplicação desses números.
 :::
 
 ???
 
+??? Exercício
+A partir da conclusão da pergunta anterior, quantas chamadas recursivas seriam necessárias para implementar o Algoritmo de Karatsuba sem a redução de uma multiplicação interna apresentada anteriormente? E se utilizarmos a metodologia aprimorada?
+
+::: Gabarito
+Sem a redução de uma multiplicação interna, será necessário calcular $x_0 \cdot x_1$, $x_0 \cdot y_0$, $x_1 \cdot y_0$ e $x_1 \cdot y_1$, logo 4 chamadas recursivas!
+
+Para a metodologia aprimorada, será necessário calcular $x_0 \cdot x_1$, $y_0 \cdot y_1$, $(x_0 + y_0) \cdot (x_1 + y_1)$, logo 3 chamadas recursivas!
+:::
+
+???
+
+Aqui está a árvore binária do Algoritmo de Karatsuba:
+
+![](3.png)
+
 !!!!!!!!!!!!!
-Colocar a partir daqui, a explicação de como funcionaria a recursão e como se chegaria à ordem n elevado a log3 na base 2, sem utilizar tanto o código - RAUL e ILANA
+Melhorar a partir daqui. Falta adicionar a explicação do resultado (a que o Yan fez no papel), tirando a explicação do teorema mestre das recorrências
 !!!!!!!!!!!!!
+
+??? Exercício
+A partir da árvore binária dada o cálculo de complexidade do Algoritmo de Karatsuba.
+
+::: Gabarito
+gabarito
+:::
+
+???
+
 
 ??? Pergunta
 Como ficaria o código em C atualizado agora?
