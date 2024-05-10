@@ -69,7 +69,7 @@ Você deve ter obtido quatro operações atômicas para a soma e oito para a mul
 
 ???
 
-??? Exercício
+??? Pergunta
 
 Para um caso geral, no qual somamos dois números de n dígitos, quantas operações atômicas você acha que faríamos? E se fosse uma multiplicação?
 
@@ -81,7 +81,21 @@ Para a soma, faríamos $k \cdot n$ operações, sendo k um número natural difer
 
 Para a multiplicação, faríamos $k_0 \cdot n^{2} + k_1$, sendo $k_0$ e $k_1$ números naturaus diferentes de zero.
 
-Para efeito de complexidade, os valores de $k_$0 e $k_1$ não mudam o fato de que somas tem complexidade n e multiplicações tem complexidade $n^{2}$, já que, sendo k e m valores constantes, $O(k \cdot n^{m}) = O(n^{m})$.
+Para efeito de complexidade, os valores de $k_0$ e $k_1$ não mudam o fato de que somas tem complexidade n e multiplicações tem complexidade $n^{2}$, já que, sendo k e m valores constantes, $O(k \cdot n^{m}) = O(n^{m})$.
+
+:::
+
+???
+
+??? Pergunta
+
+Durante a multiplicação, você realizou outro tipo de operação sem nem perceber! Você consegue identificar que operação foi essa?
+
+::: Gabarito
+
+Para a multiplicação de certos dígitos, você desloca seu resultado uma casa para a esquerda. Basicamente, você faz um left shift de um dígito, ou seja, você multiplica o resultado de cada multiplicação por potências de dez!.
+
+Para o computador, essas operações são realizadas em tempo $O(n)$. Isso se deve ao fato do computador usar uma base na forma de uma potência de dois em vez da base dez que usamos no nosso sistema algébrico, permitindo que ele realize operações de left shift e right shift para multiplicar e dividir pela base, respectivamente. Por fim, isso não altera o fato das multiplicações terem complexidade $O(n^{2})$.
 
 :::
 
@@ -98,7 +112,7 @@ Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicaçã
 Recomendamos que usem papel e caneta para resolver os exercícios.
 !!!
 
-??? Pergunta
+??? Exercício
 Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
 
 ::: Gabarito
@@ -114,7 +128,7 @@ Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse
 A partir desse resultado, podemos calcular $x \cdot y$:
 $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
 
-??? Pergunta
+??? Exercício
 Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
@@ -123,7 +137,7 @@ Teremos 4 multiplicações de números com $\frac{n}{2}$ algarismos. Se quando m
 
 ???
 
-Pela resposta, concluímos que não tivemos vantagem nessa divisão, pelo menos não ainda:
+Pela resposta, concluímos que não tivemos vantagem nessa divisão comparado ao método tradicional, pelo menos não ainda:
 
 ??? Exercício
 
@@ -185,43 +199,41 @@ Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cd
 
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
-??? Pergunta
+??? Exercício
 Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem $\frac{n}{2}$ dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
 
 ::: Gabarito
 
-Caso $x_0 + x_1$ e $y_0 + y_1$ continuarem possuindo $\frac{n}{2}$ algarismos, ficaríamos com apenas 3 multiplicações de $\frac{n}{2}$ algarismos:
+Como $x_0 + x_1$ e $y_0 + y_1$ podem ter $n+1$ algarismos em vez de $n$ (pior caso), ficaríamos com apenas 2 multiplicações de $\frac{n}{2}$ algarismos e 1 multiplicação de $\frac{n}{2} + 1$ algarismos:
 
 $$x_1\cdot y_1$$
-$$(x_0 + x_1)\cdot(y_0 + y_1)$$
 $$x_0 \cdot y_0 $$
+$$(x_0 + x_1)\cdot(y_0 + y_1)$$
 
-Sendo assim, ficaríamos com $3(\frac{n}{2})^2 = \frac{3n^2}{4}$ operações atômicas! Já é melhor que $n^2$, não?
+Sendo assim, ficaríamos com $2(\frac{n}{2})^2 + (\frac{n}{2} + 1)^2 = \frac{3n^2}{4} + \frac{n}{2} + 1$ operações atômicas! Já é melhor que $n^2$, não?
 
 :::
 
 ???
 
-!!!!!!!!!!!!!
-Colocar a partir daqui, a explicação de como funcionaria a recursão e como se chegaria à ordem n elevado a log3 na base 2, sem utilizar tanto o código - RAUL e ILANA
-!!!!!!!!!!!!!
-
 Cálculo da complexidade
 -----------------------
 
-Como vimos logo acima, conseguimos um método que usa apenas 3 multiplicações, que podem ser resolvidas recursivamente, além das outras operações (somas e shifts), que serão de ordem $n$. Podemos usar recursão até chegar na base, que é 1. Portanto, nossa nova árvore binária seria:
+Como vimos logo acima, conseguimos um método que usa apenas 3 multiplicações, que podem ser resolvidas recursivamente, além das outras operações (somas e shifts), que serão de ordem $n$. Podemos usar recursão até chegar na base, que ocorre quando $n = 1$. Portanto, nossa nova árvore binária seria:
 
 ![](3.png)
 
 Na base, chegamos em números de apenas 1 algarismo, onde basta devolver o produto (só uma operação atômica).
 
-Considerando que a cada andar o valor de n é dividido por 2, sabemos que a altura é sempre $log_{2}^{n}$. Durante o processo inteiro de multiplicação, a quantidade de operações atômicas pode ser representada por 
+Considerando que a cada andar o valor de n é dividido por 2, sabemos que a altura da árvore é $log_{2}^{n}$. Durante o processo inteiro de multiplicação, a quantidade de operações atômicas pode ser representada por 
 $$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+3^{log_{2}^{n}-1}\cdot2+3^{log_{2}^{n}}\cdot1)$$
 
-???
+??? Exercício
 
 Aplicando a fórmula das progressões geométricas
-$$S_{n} = \frac{a_{1}\cdot(q^{n}-1)}{(q-1)}$$, sendo $a_{1}=n$, $q=\frac{3}{2}$ e $n=log_{2}^{n}+1$, encontre o valor da soma e determine a complexidade do algoritmo de Karatsuba.
+$$S_{n} = \frac{a_{1}\cdot(q^{n}-1)}{(q-1)}$$
+
+Sendo $a_{1}=n$, $q=\frac{3}{2}$ e $n=log_{2}^{n}+1$, encontre o valor da soma e determine a complexidade do algoritmo de Karatsuba.
 
 !!! Dica
 Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
