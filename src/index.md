@@ -87,20 +87,6 @@ Para efeito de complexidade, os valores de $k_$0 e $k_1$ não mudam o fato de qu
 
 ???
 
-??? Pergunta
-
-Durante a operação, você realizou outro tipo de operação sem nem perceber! Você consegue identificar que operação foi essa?
-
-::: Gabarito
-
-Ao multiplicar, note que, para cada dígito multiplicado, você desloca seu resultado uma casa para a esquerda! Basicamente, você faz um shift para esquerda de um dígito, ou seja, você multiplica o resultado de cada multiplicação por potências de dez!.
-
-Para o computador, essas operações são realizadas em tempo $O(n)$. Assim, isso não altera o fato das multiplicações terem complexidade $O(n^{2})$.
-
-:::
-
-???
-
 Dividindo para conquistar
 ----------------------------------------------------
 
@@ -109,7 +95,7 @@ Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicaçã
 ![](quebra.png)
 
 !!!
-Recomendamos que usem papel e caneta para resolver os exercícios. Além disso, nenhuma das questões requer qualquer escrita de código.
+Recomendamos que usem papel e caneta para resolver os exercícios.
 !!!
 
 ??? Pergunta
@@ -117,8 +103,8 @@ Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como po
 
 ::: Gabarito
 
-$$ x = x_1 \cdot 10^{n/2} + x_0$$
-$$ y = y_1 \cdot 10^{n/2} + y_0$$
+$$ x = x_1 \cdot 10^{\frac{n}{2}} + x_0$$
+$$ y = y_1 \cdot 10^{\frac{n}{2}} + y_0$$
 
 Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse caso, completamos o número com 0 à esquerda até completar um número com quantidade par de algarismos, x = 0345, dividindo então em 03 e 45, ou seja, $3\cdot 10^2 + 45$.
 :::
@@ -126,13 +112,13 @@ Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse
 ???
 
 A partir desse resultado, podemos calcular $x \cdot y$:
-$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
+$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
 
 ??? Pergunta
 Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
-Teremos 4 multiplicações de números com n/2 algarismos. Se quando multiplicamos numeros com n algarismos teremos $n^2$ operações atômicas, ao multiplicarmos números com n/2 algarismos teremos $4(n/2)^2  = n^2$ operações atômicas.
+Teremos 4 multiplicações de números com $\frac{n}{2}$ algarismos. Se quando multiplicamos numeros com n algarismos teremos $n^2$ operações atômicas, ao multiplicarmos números com $\frac{n}{2}$ algarismos teremos $4(\frac{n}{2})^2  = n^2$ operações atômicas.
 :::
 
 ???
@@ -184,14 +170,14 @@ $$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
 ???
 
 ??? Exercício
-Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
+Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
 Como poderíamos obter $x \cdot y$ a partir dos valores de k, $x_0\cdot y_0$ e $x_1\cdot y_1$? (Lembre-se que não é necessário contar as multiplicações pela base)
 
 ::: Gabarito
 
 Do exercício anterior, sabemos que: $$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
 
-Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_0 \cdot y_0 - x_1 \cdot y_1) \cdot 10^{n/2} + x_0 \cdot y_0 $$
+Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_0 \cdot y_0 - x_1 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
 
 :::
 
@@ -199,89 +185,83 @@ Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cd
 
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
-Certo, conseguimos reduzir o número de múltiplicações intermediárias necessárias para calcular a multiplicação. Agora, vamos partir para o cálculo da complexidade do Algoritmo de Karatsuba.
-
 ??? Pergunta
-Imagine que você esteja aplicando o Algoritmo de Karatsuba com dois números de 16 dígitos cada. Isso significa que as multiplicações internas terão 8 ou 9 dígitos em cada um dos seus multiplicandos. O que podemos fazer para reduzir o número de dígitos nessas multiplicações?
+Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem $\frac{n}{2}$ dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
 
 ::: Gabarito
-Fazemos o algoritmo ser recursivo! Podemos dividir novamente cada número em dois números menores e repetir esta etapa!
 
-Qual deverá ser a base dessa recursão?
+Caso $x_0 + x_1$ e $y_0 + y_1$ continuarem possuindo $\frac{n}{2}$ algarismos, ficaríamos com apenas 3 multiplicações de $\frac{n}{2}$ algarismos:
 
-::: Gabarito
-A base deve ser n == 1. Paramos aplicar o algoritmo de divisão quando os números tem apenas um dígito e simplesmente retornamos a multiplicação desses números.
+$$x_1\cdot y_1$$
+$$(x_0 + x_1)\cdot(y_0 + y_1)$$
+$$x_0 \cdot y_0 $$
+
+Sendo assim, ficaríamos com $3(\frac{n}{2})^2 = \frac{3n^2}{4}$ operações atômicas! Já é melhor que $n^2$, não?
+
 :::
 
 ???
 
-??? Exercício
-A partir da conclusão da pergunta anterior, quantas chamadas recursivas seriam necessárias para implementar o Algoritmo de Karatsuba sem a redução de uma multiplicação interna apresentada anteriormente? E se utilizarmos a metodologia aprimorada?
+!!!!!!!!!!!!!
+Colocar a partir daqui, a explicação de como funcionaria a recursão e como se chegaria à ordem n elevado a log3 na base 2, sem utilizar tanto o código - RAUL e ILANA
+!!!!!!!!!!!!!
 
-::: Gabarito
-Sem a redução de uma multiplicação interna, será necessário calcular $x_0 \cdot x_1$, $x_0 \cdot y_0$, $x_1 \cdot y_0$ e $x_1 \cdot y_1$, logo 4 chamadas recursivas!
+Cálculo da complexidade
+-----------------------
 
-Para a metodologia aprimorada, será necessário calcular $x_0 \cdot x_1$, $y_0 \cdot y_1$, $(x_0 + y_0) \cdot (x_1 + y_1)$, logo 3 chamadas recursivas!
-:::
-
-???
-
-Aqui está a árvore binária do Algoritmo de Karatsuba:
+Como vimos logo acima, conseguimos um método que usa apenas 3 multiplicações, que podem ser resolvidas recursivamente, além das outras operações (somas e shifts), que serão de ordem $n$. Podemos usar recursão até chegar na base, que é 1. Portanto, nossa nova árvore binária seria:
 
 ![](3.png)
 
-!!!!!!!!!!!!!
-Melhorar a partir daqui. Falta adicionar a explicação do resultado (a que o Yan fez no papel), tirando a explicação do teorema mestre das recorrências
-!!!!!!!!!!!!!
+Na base, chegamos em números de apenas 1 algarismo, onde basta devolver o produto (só uma operação atômica).
 
-??? Exercício
-A partir da árvore binária dada o cálculo de complexidade do Algoritmo de Karatsuba.
-
-::: Gabarito
-gabarito
-:::
+Considerando que a cada andar o valor de n é dividido por 2, sabemos que a altura é sempre $log_{2}^{n}$. Durante o processo inteiro de multiplicação, a quantidade de operações atômicas pode ser representada por 
+$$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+3^{log_{2}^{n}-1}\cdot2+3^{log_{2}^{n}}\cdot1)$$
 
 ???
 
+Aplicando a fórmula das progressões geométricas
+$$S_{n} = \frac{a_{1}\cdot(q^{n}-1)}{(q-1)}$$, sendo $a_{1}=n$, $q=\frac{3}{2}$ e $n=log_{2}^{n}+1$, encontre o valor da soma e determine a complexidade do algoritmo de Karatsuba.
 
-??? Pergunta
-Como ficaria o código em C atualizado agora?
+!!! Dica
+Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
+!!!
 
 ::: Gabarito
 
-``` c
-int karatsuba(int x, int y, int n) {
-    if (n == 1) {
-        return x * y;
-    }
-    
-    int x1 = x / pow(10, n/2);
-    int x0 = x % pow(10, n/2);
-    int y1 = y / pow(10, n/2);
-    int y0 = y % pow(10, n/2);
-    
-    int x1y1 = karatsuba(x1, y1, n / 2);
-    int x0y0 = karatsuba(x0, y0, n / 2);
-    int k = karatsuba((x1 + x0), (x0 + y0), n/2 + 1);
-    
-    return x1y1*pow(10, n) +(k - x1y1 - x0y0)*pow(10, n/2) + x0y0;
-}
-```
+A equação pode ser resolvida com algumas manipulações algébricas, como a seguir:
+
+$$ $$
+
+$$S=\frac{n\cdot((\frac{3}{2})^{log_{2}^{n}+1}-1)}{\frac{3}{2}-1}$$
+
+$$ $$
+
+$$S=2\cdot n\cdot(\frac{3^{log_{2}^{n}}}{2^{log_{2}^{n}}}\cdot\frac{3}{2}-1)$$
+
+$$ $$
+
+$$S=n\cdot\frac{3^{log_{2}^{n}}}{n}\cdot3-2\cdot n$$
+
+$$ $$
+
+$$S=3\cdot3^{\frac{log_{3}^{n}}{log_{3}^{2}}}-2\cdot n$$
+
+$$ $$
+
+$$S=3\cdot n^{\frac{1}{log_{3}^{2}}}-2\cdot n$$
+
+$$ $$
+
+$$S=3\cdot n^{log_{2}^{3}}-2\cdot n$$
+
+$$ $$
+
+Considerando que $2\cdot n$ é de menor relevância que $n^{log_{2}^{3}}$, pode-se concluir que a complexidade é $$O(n^{log_{2}^{3}}) ≈ O(n^{1.58})$$
 
 :::
 
 ???
-
-Nossa nova árvore binária seria:
-![](3.png)
-
-A complexidade desse algoritmo é calculada através do [teorema mestre das recorrências de divisão e conquista](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)). Você não precisa entender esse teorema, apenas saber que algoritmos de divisão e conquista cuja recorrência se encaixa no padrão abaixo já tem sua complexidade calculada. $$T(n) = a*T(n/b) + f(n)$$
-
-No nosso caso, observando o primeiro "andar" da árvore binária, notamos que o Algoritmo de Karatsuba tem a seguinte recorrência: $$T(n) = 3*T(n/2) + n$$
-
-Logo, a complexidade é $$O(n^{log2(3)}) ≈ O(n^{1.58})$$
-
-
 
 Aplicações para o método de Karatsuba
 -------------------------------------
