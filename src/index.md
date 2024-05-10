@@ -2,128 +2,87 @@ Método de Karatsuba para Multiplicações
 ======
 
 
-Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos você deve ter uma idéia já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, até o ano de 1960, acreditava-se que só era possível ter algoritmos de multiplicação de ordem de complexidade $n^2$, mas Karatsuba trouxe o primeiro algoritmo que contrariou esse fato.
+Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos, você deve ter uma idéia, já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, o matemático russo Anatoly Karatsuba desenvolveu um algoritmo no ano de 1960 que era capaz de reduzir o número de múltiplicações de um dígito entre dois números de n dígitos para um máximo de $n^{log2(3)} ≈ n^{1.58}$ operações, que é mais rápido que o método tradicional, que faz $n^{1.58}$ operações.
 
 ![](mult.png)
-
-??? Pergunta
-Faça no papel a seguinte conta:
-
-$$
-\begin{array}{r}
-  2 \\
-\underline{\times \quad 3} \\
-\phantom{0000}
-\end{array}
-$$
-
-Quantas multiplicações de **um dígito** e somas de **um dígito** foram feitas? a partir desses resultados, quantas operações atômicas foram realizadas?
-::: Gabarito
-O resultado da multiplicação é 6. Foi feita uma multiplicação de um dígito e zero somas de um dígito. Logo, foi realizada uma operação atômica 
-:::
-
-???
-
-??? Pergunta
-Faça no papel a seguinte conta:
-
-$$
-\begin{array}{r}
-  31 \\
-\underline{\times \quad 22} \\
-\phantom{0000}
-\end{array}
-$$
-
-Quantas multiplicações de **um dígito** e somas de **um dígito** foram feitas?
-::: Gabarito
-O resultado da multiplicação é 682. Foram feitas quatro multiplicação de um dígito e três somas de um dígito. Logo, foram realizadas cinco operações atômicas
-:::
-
-???
 
 Redefinindo nossa operação atômica
 ----------------------------------------------------
 
-Apesar dos resultados que acabamos de obter, eles estão errados para o contexto dos algoritmos de multiplicação.
+De acordo com nossos conhecimentos de computação, uma operação atômica é qualquer operação do tipo de atribuição (`md =`), aritmética (`md +`, `md -`, `md *`, `md /`, `md %`), comparação (`md ==`, `md !=`, `md <`, `md <=`, `md >`, `md >=`), entre outras operações. No entanto, para a análise de algoritmos de multiplicação, a convenção é que **uma operação atômica é qualquer multiplicação e soma (e seus respectivos derivados) de um dígito**.
 
-Para desenvolvermos a ideia dos algoritmos de multiplicação, é fundamental compreender o custo de cada tipo de operação para o computador. Quando realizamos multiplicações simples entre números de um único algarismo, como, por exemplo, $5 \cdot 6$, estamos essencialmente somando cinco vezes o número seis ($6 + 6 + 6 + 6 + 6$). Assim, se considerarmos que cada soma tem um custo unitário, para calcular o produto de um número n com um algarismo por outro número m, também com um único algarismo, o custo será igual a n ou m, dependendo de qual dos dois números é o menor, para minimizarmos o número de somas necessárias.
+Isso é feito porque não faria sentido analisar a complexidade de algoritmos de multiplicação se a própria multiplicação já tem complexidade igual a $O(1)$.
 
-Dessa forma, é evidente que os produtos são consideravelmente mais custosos do que as simples somas. Portanto, a partir deste ponto, adotaremos a premissa de que **nossa operação atômica é a multiplicação de números de um único algarismo**. No caso de nos depararmos com uma multiplicação por um valor $B^x$, sendo B a base em que os números estão sendo adotados, não a consideraremos como uma operação atômica, pois é possível realizar a multiplicação por potências da base através de deslocamentos (shifts), como por exemplo, ao calcular $3 \cdot 2^4$, estando os números na base 2, bastaria realizar um deslocamento de 4 casas para a esquerda, ou, para nós humanos que usamos base 10, basta adicionar um zero no fim do número.
+??? Exercício
 
-Neste handout, usaremos a base igual a 10, pois esse valor é o que estamos acostumados a usar. No entanto, nos computadores, o algoritmo de Karatsuba é aplicado com bases na forma de potências de 2.
-
-Algoritmo de multiplicação ordinária
------------------------------------------------------
-
-Começaremos entendendo o único algoritmo de multiplicação para números grandes que existia até 1960. Nesse algoritmo usa-se a mesma idéia de multiplicação que utilizamos quando calculamos no papel:
-
-??? Exemplo
-
-Considerando os números 1234 e 5678, chamaremos o total de algarismos em cada um de **n** (nesse caso, n = 4):
+Conte o número de operações atômicas que você realiza ao fazer as seguintes contas:
 
 $$
 \begin{array}{r}
-  1234 \\
-\underline{\times \quad 5678} \\
+  12 \\
+\underline{+ \quad 34} \\
 \phantom{0000}
 \end{array}
 $$
 
-Primeiro multiplicamos o dígito menos significativo do segundo número por cada dígito do primeiro número:
-
 $$
 \begin{array}{r}
-  1234 \\
-\underline{\times \quad 5678} \\
-  9872
+  12 \\
+\underline{\times \quad 34} \\
+\phantom{0000}
 \end{array}
 $$
-
-Repetindo o mesmo processo para os próximos algarismos temos:
-
-$$
-\begin{array}{r}
-1234\\
-\underline{\times \quad 5678} \\
-   9872\\
-  8638\phantom{0}\\
- 7404\phantom{00}\\
-6170\phantom{000}\\
-\end{array}
-$$
-
-Realizando as somas:
-
-$$
-\begin{array}{r}
-1234\\
-\underline{\times \quad 5678} \\
-   9872\\
-  8638\phantom{0}\\
- 7404\phantom{00}\\
-\underline{+ \quad 6170\phantom{000}\\} \\
-7006652
-\end{array}
-$$
-
-???
-
-
-??? Pergunta
-Qual é o número de operações atômicas nessa operação?
 
 ::: Gabarito
-Relembrando que nossa operação atômica é a multiplicação de algarismos de 1 dígito: Multiplicando o algarismo menos significativo do número de baixo por cada um dos 4 algarismos de cima temos 4 multiplicações, como temos 4 números que realizam esse processo, teremos 4x4 = 16 operações atômicas.
+
+Você deve ter obtido duas operações atômicas para a soma e seis para a multiplicação (quatro multiplicações de um dígito, uma soma normal e uma soma de carry-over).
+
 :::
 
 ???
 
-??? Pergunta
-Para um caso geral em que multiplicamos dois números de n dígitos cada, qual será o número operações atômicas nessa operação?
+??? Exercício
+
+Conte o número de operações atômicas que você realiza ao fazer as seguintes contas:
+
+$$
+\begin{array}{r}
+  145 \\
+\underline{+ \quad 327} \\
+\phantom{0000}
+\end{array}
+$$
+
+$$
+\begin{array}{r}
+  111 \\
+\underline{\times \quad 32} \\
+\phantom{0000}
+\end{array}
+$$
 
 ::: Gabarito
-Nesse caso, teremos $n \cdot n = n^2$ operações atômicas.
+
+Você deve ter obtido quatro operações atômicas para a soma e oito para a multiplicação (seis multiplicações de um dígito e duas somas de um dígito).
+
+:::
+
+???
+
+??? Exercício
+
+Para um caso geral, no qual somamos dois números de n dígitos, quantas operações atômicas você acha que faríamos? E se fosse uma multiplicação?
+
+Observação: não precisa fazer nenhuma conta, responda o que fizer sentido para você.
+
+::: Gabarito
+
+Para a soma, faríamos $k \cdot n$ operações, sendo k um número natural diferente de zero. (bônus: ele vale entre 1 e 2!).
+
+Para a multiplicação, faríamos $k_0 \cdot n^{2} + k_1$, sendo $k_0$ e $k_1$ números naturaus diferentes de zero.
+
+Para efeito de complexidade, os valores de $k_$0 e $k_1$ não mudam o fato de que somas tem complexidade n e multiplicações tem complexidade $n^{2}$, já que, sendo k e m valores constantes, $O(k \cdot n^{m}) = O(n^{m})$.
+
 :::
 
 ???
@@ -134,6 +93,10 @@ Dividindo para conquistar
 Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicação ordinária, Karatsuba tentou dividir os números que serão multiplicados em dois números com a mesma quantidade de algarismos:
 
 ![](quebra.png)
+
+!!!
+Recomendamos que usem papel e caneta para resolver os exercícios.
+!!!
 
 ??? Pergunta
 Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
