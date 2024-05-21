@@ -2,7 +2,7 @@ Método de Karatsuba para Multiplicações
 ======
 
 
-Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos, você deve ter uma idéia, já que estudou em elementos de sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, o matemático russo Anatoly Karatsuba desenvolveu um algoritmo no ano de 1960 que era capaz de reduzir o número de múltiplicações de um dígito entre dois números de n dígitos para um máximo de $n^{log2(3)} ≈ n^{1.58}$ operações, que é mais rápido que o método tradicional, que faz $n^{1.58}$ operações.
+Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos, você deve ter uma ideia, já que estudou em Elementos de Sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, o matemático russo Anatoly Karatsuba desenvolveu um algoritmo no ano de 1960 que era capaz de reduzir o número de múltiplicações de um dígito entre dois números de n dígitos.
 
 ![](mult.png)
 
@@ -77,29 +77,18 @@ Observação: não precisa fazer nenhuma conta, responda o que fizer sentido par
 
 ::: Gabarito
 
-Para a soma, faríamos $k \cdot n$ operações, sendo k um número natural diferente de zero. (bônus: ele vale entre 1 e 2!).
+Para a soma, faríamos cerca de $n$ operações.
 
-Para a multiplicação, faríamos $k_0 \cdot n^{2} + k_1$, sendo $k_0$ e $k_1$ números naturaus diferentes de zero.
+Para a multiplicação, faríamos cerca de $n^{2}$ operações.
 
-Para efeito de complexidade, os valores de $k_0$ e $k_1$ não mudam o fato de que somas tem complexidade n e multiplicações tem complexidade $n^{2}$, já que, sendo k e m valores constantes, $O(k \cdot n^{m}) = O(n^{m})$.
+Não são exatamente $n$ operações para somas e $n^{2}$ operações para multiplicações porque podemos ter "vai-ums" durante as somas e, no fim da multiplicação, fazemos algumas somas para obter o resultado final. 
 
-:::
-
-???
-
-??? Pergunta
-
-Durante a multiplicação, você realizou outro tipo de operação sem nem perceber! Você consegue identificar que operação foi essa?
-
-::: Gabarito
-
-Para a multiplicação de certos dígitos, você desloca seu resultado uma casa para a esquerda. Basicamente, você faz um left shift de um dígito, ou seja, você multiplica o resultado de cada multiplicação por potências de dez!.
-
-Para o computador, essas operações são realizadas em tempo $O(n)$. Isso se deve ao fato do computador usar uma base na forma de uma potência de dois em vez da base dez que usamos no nosso sistema algébrico, permitindo que ele realize operações de left shift e right shift para multiplicar e dividir pela base, respectivamente. Por fim, isso não altera o fato das multiplicações terem complexidade $O(n^{2})$.
+Para efeito de complexidade, isso não muda o fato de que somas tem complexidade O(n) e multiplicações tem complexidade O($n^{2}$).
 
 :::
 
 ???
+
 
 Dividindo para conquistar
 ----------------------------------------------------
