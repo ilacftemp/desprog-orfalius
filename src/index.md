@@ -118,10 +118,12 @@ A partir desse resultado, podemos calcular $x \cdot y$:
 $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
 
 ??? Exercício
-Qual é o número de operações atômicas nessa operação?
+Qual é o número de operações atômicas nessa operação? Considere apenas as multiplicações.
 
 ::: Gabarito
 Teremos 4 multiplicações de números com $\frac{n}{2}$ algarismos. Se quando multiplicamos numeros com n algarismos teremos $n^2$ operações atômicas, ao multiplicarmos números com $\frac{n}{2}$ algarismos teremos $4(\frac{n}{2})^2  = n^2$ operações atômicas.
+
+Observação: as multiplicações por potências de dez não foram consideradas. Isso se deve ao fato de que multiplicações **pela base** são simplesmente deslocamentos de dígitos, que têm complexidade $O(n)$.
 :::
 
 ???
@@ -132,6 +134,8 @@ Pela resposta, concluímos que não tivemos vantagem nessa divisão comparado ao
 
 Esquecendo um pouco as operações atômicas, qual é a quantidade mínima de multiplicações necessárias para calcular 
 $$ x_0^{2} - x_0 \cdot y_0 $$
+
+Dica: pense em como você pode fatorar essa expressão.
 
 ::: Gabarito
 
@@ -149,6 +153,8 @@ $$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
 
 Continue sem utilizar as operações atômicas, considere multiplicações normais.
 
+Dica: você precisará fazer três fatorações.
+
 ::: Gabarito
 
 Podemos fatorar a expressão da seguinte maneira: $$ (x_0 + x_1)\cdot(y_0 + y_1) $$
@@ -162,6 +168,7 @@ Nós reduzimos a equação a apenas uma multiplicação!
 
 Suponha que exista um valor k, tal que $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ Obtenha o valor de $(x_1 \cdot y_0 + x_0 \cdot y_1)$ em função de k, $x_0\cdot y_0$ e $x_1\cdot y_1$
 
+Dica: abra o produto e isole a expressão que você deseja calcular.
 
 ::: Gabarito
 Abrindo a expressão de k, temos 
@@ -174,7 +181,9 @@ $$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
 
 ??? Exercício
 Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
-Como poderíamos obter $x \cdot y$ a partir dos valores de k, $x_0\cdot y_0$ e $x_1\cdot y_1$? (Lembre-se que não é necessário contar as multiplicações pela base)
+Como poderíamos obter $x \cdot y$ a partir dos valores de k, $x_0\cdot y_0$ e $x_1\cdot y_1$?
+
+Dica: use o resultado do exercício anterior!
 
 ::: Gabarito
 
