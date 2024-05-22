@@ -115,7 +115,7 @@ Caso tenha se perguntado, e se n for ímpar? Como por exemplo, se x = 345. Nesse
 ???
 
 A partir desse resultado, podemos calcular $x \cdot y$:
-$$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
+$$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + ({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
 ??? Exercício
 Qual é o número de operações atômicas nessa operação? Considere apenas as multiplicações.
@@ -133,7 +133,7 @@ Pela resposta, concluímos que não tivemos vantagem nessa divisão comparado ao
 ??? Exercício
 
 Esquecendo um pouco as operações atômicas, qual é a quantidade mínima de multiplicações necessárias para calcular 
-$$ x_0^{2} - x_0 \cdot y_0 $$
+$$ x_0^{2} - {\color{orange}x_0 \cdot y_0} $$
 
 Dica: pense em como você pode fatorar essa expressão.
 
@@ -149,7 +149,7 @@ Nós reduzimos a equação a apenas uma multiplicação!
 ??? Exercício
 
 Considerando que sabemos os valores de $x_0, x_1, y_0, y_1$. Qual é a quantidade mínima de multiplicações necessárias para calcular 
-$$ x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0 $$
+$$ {\color{orange}x_0 \cdot y_0} + {\color{red}x_1 \cdot y_1} + {\color{magenta}x_0 \cdot y_1} + {\color{blue}x_1 \cdot y_0} $$
 
 Continue sem utilizar as operações atômicas, considere multiplicações normais.
 
@@ -166,30 +166,32 @@ Nós reduzimos a equação a apenas uma multiplicação!
 
 ??? Exercício
 
-Suponha que exista um valor k, tal que $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ Obtenha o valor de $(x_1 \cdot y_0 + x_0 \cdot y_1)$ em função de k, $x_0\cdot y_0$ e $x_1\cdot y_1$
+Suponha que exista um valor k, tal que 
+$$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ 
+Obtenha o valor de $({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1})$ em função de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$
 
 Dica: abra o produto e isole a expressão que você deseja calcular.
 
 ::: Gabarito
 Abrindo a expressão de k, temos 
-$$k = x_0 \cdot y_0 + x_1 \cdot y_1 + x_0 \cdot y_1 + x_1 \cdot y_0$$ 
-Logo, podemos obter $(x_1 \cdot y_0 + x_0 \cdot y_1)$ da seguinte maneira:
-$$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
+$$k = {\color{orange}x_0 \cdot y_0} + {\color{red}x_1 \cdot y_1} + {\color{magenta}x_0 \cdot y_1} + {\color{blue}x_1 \cdot y_0}$$ 
+Logo, podemos obter $({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1})$ da seguinte maneira:
+$$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1} $$
 :::
 
 ???
 
 ??? Exercício
-Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = (x_1 \cdot y_1)\cdot 10^n + (x_1 \cdot y_0 + x_0 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
-Como poderíamos obter $x \cdot y$ a partir dos valores de k, $x_0\cdot y_0$ e $x_1\cdot y_1$?
+Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = ({\color{red}x_1 \cdot y_1})\cdot 10^n + ({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
+Como poderíamos obter $x \cdot y$ a partir dos valores de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$?
 
 Dica: use o resultado do exercício anterior!
 
 ::: Gabarito
 
-Do exercício anterior, sabemos que: $$(x_1 \cdot y_0 + x_0 \cdot y_1) = k - x_0\cdot y_0 - x_1\cdot y_1 $$
+Do exercício anterior, sabemos que: $$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1} $$
 
-Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cdot 10^n + (k - x_0 \cdot y_0 - x_1 \cdot y_1) \cdot 10^{\frac{n}{2}} + x_0 \cdot y_0 $$
+Substituindo então na expressão, temos que: $$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + (k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
 :::
 
@@ -198,14 +200,14 @@ Substituindo então na expressão, temos que: $$ x \cdot y = (x_1 \cdot y_1) \cd
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
 ??? Exercício
-Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem $\frac{n}{2}$ dígitos e que produtos como $x_0 \cdot y_0$ não precisam ser realizados duas vezes quando já se sabe o valor?
+Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem $\frac{n}{2}$ dígitos e que produtos como ${\color{orange}x_0 \cdot y_0}$ não precisam ser realizados duas vezes quando já se sabe o valor?
 
 ::: Gabarito
 
 Como $x_0 + x_1$ e $y_0 + y_1$ podem ter $n+1$ algarismos em vez de $n$ (pior caso), ficaríamos com apenas 2 multiplicações de $\frac{n}{2}$ algarismos e 1 multiplicação de $\frac{n}{2} + 1$ algarismos:
 
-$$x_1\cdot y_1$$
-$$x_0 \cdot y_0 $$
+$${\color{red}x_1 \cdot y_1}$$
+$${\color{orange}x_0 \cdot y_0}$$
 $$(x_0 + x_1)\cdot(y_0 + y_1)$$
 
 Sendo assim, ficaríamos com $2(\frac{n}{2})^2 + (\frac{n}{2} + 1)^2 = \frac{3n^2}{4} + \frac{n}{2} + 1$ operações atômicas! Já é melhor que $n^2$, não?
