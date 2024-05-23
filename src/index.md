@@ -2,7 +2,7 @@ Método de Karatsuba para Multiplicações
 ======
 
 
-Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos, você deve ter uma ideia, já que estudou em Elementos de Sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, o matemático russo Anatoly Karatsuba desenvolveu um algoritmo no ano de 1960 que era capaz de reduzir o número de múltiplicações de um dígito entre dois números de n dígitos.
+Utilizamos inúmeras multiplicações em nossos programas, mas já parou para se perguntar como essas operações são efetivamente realizadas por trás dos panos? Para números pequenos, você deve ter uma ideia, já que estudou em Elementos de Sistemas que a multiplicação é nada mais do que várias somas. Já para numeros grandes, o matemático russo Anatoly Karatsuba desenvolveu um algoritmo no ano de 1960 que ultrapassou o que acreditava-se ser naquela época o algoritmo de multiplicação para números grandes mais eficiente.
 
 ![](mult.png)
 
@@ -133,7 +133,7 @@ Pela resposta, concluímos que não tivemos vantagem nessa divisão comparado ao
 ??? Exercício
 
 Esquecendo um pouco as operações atômicas, qual é a quantidade mínima de multiplicações necessárias para calcular 
-$$ x_0^{2} - {\color{orange}x_0 \cdot y_0} $$
+$$ x_0^{2} - x_0 \cdot y_0 $$
 
 Dica: pense em como você pode fatorar essa expressão.
 
@@ -193,6 +193,8 @@ Do exercício anterior, sabemos que: $$({\color{blue}x_1 \cdot y_0} + {\color{ma
 
 Substituindo então na expressão, temos que: $$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + (k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
+Sendo $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ 
+
 :::
 
 ???
@@ -210,7 +212,7 @@ $${\color{red}x_1 \cdot y_1}$$
 $${\color{orange}x_0 \cdot y_0}$$
 $$(x_0 + x_1)\cdot(y_0 + y_1)$$
 
-Sendo assim, ficaríamos com $2(\frac{n}{2})^2 + (\frac{n}{2} + 1)^2 = \frac{3n^2}{4} + \frac{n}{2} + 1$ operações atômicas! Já é melhor que $n^2$, não?
+Sendo assim, ficaríamos com $2(\frac{n}{2})^2 + (\frac{n}{2} + 1)^2 = \frac{3n^2}{4} + \frac{n}{2} + 1$ operações atômicas de multiplicação! Já é melhor que $n^2$, não?
 
 :::
 
@@ -225,27 +227,86 @@ Como vimos logo acima, conseguimos um método que usa apenas 3 multiplicações,
 
 Na base, chegamos em números de apenas 1 algarismo, onde basta devolver o produto (só uma operação atômica).
 
-Considerando que a cada andar o valor de n é dividido por 2, sabemos que a altura da árvore é $log_{2}^{n}$. Durante o processo inteiro de multiplicação, a quantidade de operações atômicas pode ser representada por 
-$$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+3^{log_{2}^{n}-1}\cdot2+3^{log_{2}^{n}}\cdot1)$$
-
 ??? Exercício
 
-Aplicando a fórmula das progressões geométricas
-$$S_{n} = \frac{a_{1}\cdot(q^{n}-1)}{(q-1)}$$
-
-Sendo $a_{1}=n$, $q=\frac{3}{2}$ e $n=log_{2}^{n}+1$, encontre o valor da soma e determine a complexidade do algoritmo de Karatsuba.
+Qual seria o valor h da altura da árvore?
 
 !!! Dica
-Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
+Utilize potências de 2 no valor de n para facilitar a dedução.
 !!!
 
 ::: Gabarito
 
-A equação pode ser resolvida com algumas manipulações algébricas, como a seguir:
+Vamos pensar caso n fosse igual a 1. Já estariamos na base e teríamos h = 1.  
+Sendo n = 2. Teríamos h = 2.  
+Sendo n = 4. Teríamos h = 3.  
+sendo n = 8. Teríamos h = 4.  
+...  
+Sendo n = n. Teríamos $h = log_{2} n + 1$
+
+:::
+
+???
+
+??? Exercício
+
+No primeiro andar soma-se 1 vez n, no segundo andar 3 vezes n/2, no terceiro 9 vezes n/4, então qual é o termo do quinto andar
+e quantas vezes somamos ele? E no último andar dado a altura da árvore h?
+
+::: Gabarito
+
+No quinto andar teríamos que continuar dividindo por 2 o valor a ser somado, e multiplicar por 3 a quantidade de vezes que o somamos.
+Logo teríamos que somar 27 vezes n/8.
+Portanto, no último andar somaremos o termo $\frac{n}{2^{h-1}}$ um total de $3^{h-1}$ vezes.
+
+:::
+
+???
+
+??? Exercício
+
+Agora que sabemos os termos iniciais e finais da soma do total de operações atômicas, qual é o tipo de progressão? Qual é o termo inicial, razão e
+total de termos?
+Ainda deixe em função de h.
+
+Dica: Escrever a soma ajuda a visualizar
+
+::: Gabarito
+
+$$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+ 3^{h-1} \cdot \frac{n}{2^{h-1}})$$
+
+Observamos uma PG de termo inicial n, razão 3/2 e um total de h termos, lembrando que $h = log_{2} n + 1$
+:::
+
+???
+
+
+??? Exercício
+
+Aplique a soma de progressões geométricas finitas para os valores acima e encontre uma expressão para a soma total das operações atômicas.
+$$S_{m} = \frac{a_{1}\cdot(q^{m}-1)}{(q-1)}$$
+
+$a_1$ é o termo inicial, $m$ o total de termos e $q$ a razão.  
+OBS: Você deve chegar em algo que possua $3^{log_{2}^{n}}$, simplifique qualquer outra potência de logarítmo que esteja elevando a própria base.
+
+!!! Dica
+Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
+!!!
+::: Gabarito
+
+
 
 $$ $$
 
 $$S=\frac{n\cdot((\frac{3}{2})^{log_{2}^{n}+1}-1)}{\frac{3}{2}-1}$$
+
+$$ $$
+
+$$S=\frac{n\cdot((\frac{3}{2})^{log_{2}^{n}+1}-1)}{\frac{1}{2}}$$
+
+$$ $$
+
+$$S=\frac{n\cdot((\frac{3}{2})^{log_{2}^{n}} \cdot \frac{3}{2}^{1} -1)}{\frac{1}{2}}$$
 
 $$ $$
 
@@ -257,11 +318,28 @@ $$S=n\cdot\frac{3^{log_{2}^{n}}}{n}\cdot3-2\cdot n$$
 
 $$ $$
 
-$$S=3\cdot3^{\frac{log_{3}^{n}}{log_{3}^{2}}}-2\cdot n$$
+$$S=3^{log_{2}^{n}}\cdot3-2\cdot n$$
 
 $$ $$
 
-$$S=3\cdot n^{\frac{1}{log_{3}^{2}}}-2\cdot n$$
+:::
+
+???
+
+??? Exercício
+
+Queremos que o n saia do expoente, como podemos fazer isso utilizando as propriedades de logaritmos?
+
+::: Gabarito
+
+Através da propriedade de mudança de base temos:
+$$ $$
+
+$$S=3^{\frac{log_{3}^{n}}{log_{3}^{2}}}\cdot 3-2\cdot n$$
+
+$$ $$
+
+$$S= n^{\frac{1}{log_{3}^{2}}}\cdot 3-2\cdot n$$
 
 $$ $$
 
@@ -269,11 +347,13 @@ $$S=3\cdot n^{log_{2}^{3}}-2\cdot n$$
 
 $$ $$
 
-Considerando que $2\cdot n$ é de menor relevância que $n^{log_{2}^{3}}$, pode-se concluir que a complexidade é $$O(n^{log_{2}^{3}}) ≈ O(n^{1.58})$$
-
 :::
 
 ???
+
+
+
+Considerando que $2\cdot n$ é de menor relevância que $n^{log_{2}^{3}}$, pode-se concluir que a complexidade é $$O(n^{log_{2}^{3}}) ≈ O(n^{1.58})$$
 
 Aplicações para o método de Karatsuba
 -------------------------------------
