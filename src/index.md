@@ -11,7 +11,7 @@ Redefinindo nossa operação atômica
 
 De acordo com nossos conhecimentos de computação, uma operação atômica é qualquer operação do tipo de atribuição (`md =`), aritmética (`md +`, `md -`, `md *`, `md /`, `md %`), comparação (`md ==`, `md !=`, `md <`, `md <=`, `md >`, `md >=`), entre outras operações. No entanto, para a análise de algoritmos de multiplicação, a convenção é que **uma operação atômica é qualquer multiplicação e soma (e seus respectivos derivados) de um dígito**.
 
-Isso é feito porque não faria sentido analisar a complexidade de algoritmos de multiplicação se a própria multiplicação já tem complexidade igual a $O(1)$.
+Isso é feito porque não faria sentido analisar a complexidade de algoritmos de multiplicação se toda e qualquer multiplicação tem complexidade igual a $O(1)$.
 
 ??? Exercício
 
@@ -35,7 +35,7 @@ $$
 
 ::: Gabarito
 
-Você deve ter obtido duas operações atômicas para a soma e seis para a multiplicação (quatro multiplicações de um dígito, uma soma normal e uma soma de carry-over).
+Você deve ter obtido duas operações atômicas para a soma e seis para a multiplicação (quatro multiplicações de um dígito, uma soma de um dígito e uma soma de vai-um).
 
 :::
 
@@ -63,7 +63,7 @@ $$
 
 ::: Gabarito
 
-Você deve ter obtido quatro operações atômicas para a soma e oito para a multiplicação (seis multiplicações de um dígito e duas somas de um dígito).
+Você deve ter obtido quatro operações atômicas para a soma (três somas de um dígito e uma soma de vai-um) e oito para a multiplicação (seis multiplicações de um dígito e duas somas de um dígito).
 
 :::
 
@@ -83,7 +83,7 @@ Para a multiplicação, faríamos cerca de $n^{2}$ operações.
 
 Não são exatamente $n$ operações para somas e $n^{2}$ operações para multiplicações porque podemos ter "vai-ums" durante as somas e, no fim da multiplicação, fazemos algumas somas para obter o resultado final. 
 
-Para efeito de complexidade, isso não muda o fato de que somas tem complexidade O(n) e multiplicações tem complexidade O($n^{2}$).
+Para efeito de complexidade, isso não muda o fato de que somas têm complexidade O(n) e multiplicações têm complexidade O($n^{2}$).
 
 :::
 
@@ -93,16 +93,30 @@ Para efeito de complexidade, isso não muda o fato de que somas tem complexidade
 Dividindo para conquistar
 ----------------------------------------------------
 
-Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicação ordinária, Karatsuba tentou dividir os números que serão multiplicados em dois números com a mesma quantidade de algarismos:
+Com o objetivo de reduzir a complexidade $O(n^2)$ do algoritmo de multiplicação ordinária, Karatsuba tentou dividir cada um dos números que serão multiplicados em dois números com a mesma quantidade de algarismos:
 
 ![](quebra.png)
+
+??? Exemplo Guiado
+
+Vamos fazer a partição de $x$ e $y$ da imagem acima em $x_0$, $x_1$, $y_0$ e $y_1$.
+
+Como $x$ e $y$ têm 8 dígitos, $x_0$, $x_1$, $y_0$ e $y_1$ terão ${\frac{8}{2}}=4$ dígitos.
+
+Como trabalhamos na base 10, podemos escrever $x$ e $y$ da seguinte maneira:
+
+$$ x = 1111 \cdot 10^{4} + 2222$$
+$$ y = 3333 \cdot 10^{4} + 4444$$
+???
 
 !!!
 Recomendamos que usem papel e caneta para resolver os exercícios.
 !!!
 
 ??? Exercício
-Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$ ?
+Supondo que x e y possuem **n** algarismos cada e que estão na base 10, como poderiamos escrevê-los em função de $x_0$, $x_1$, $y_0$ e $y_1$?
+
+Dica: é uma generalização do exemplo anterior
 
 ::: Gabarito
 
@@ -118,7 +132,7 @@ A partir desse resultado, podemos calcular $x \cdot y$:
 $$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + ({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
 ??? Exercício
-Qual é o número de operações atômicas nessa operação? Considere apenas as multiplicações.
+Qual é o número de operações atômicas nessa operação? Considere apenas as multiplicações coloridas.
 
 ::: Gabarito
 Teremos 4 multiplicações de números com $\frac{n}{2}$ algarismos. Se quando multiplicamos numeros com n algarismos teremos $n^2$ operações atômicas, ao multiplicarmos números com $\frac{n}{2}$ algarismos teremos $4(\frac{n}{2})^2  = n^2$ operações atômicas.
@@ -128,7 +142,7 @@ Observação: as multiplicações por potências de dez não foram consideradas.
 
 ???
 
-Pela resposta, concluímos que não tivemos vantagem nessa divisão comparado ao método tradicional, pelo menos não ainda:
+Pela resposta, observamos que não tivemos vantagem nessa divisão comparado ao método tradicional, que também tinha $n^2$ operações, pelo menos não ainda:
 
 ??? Exercício
 
@@ -139,7 +153,7 @@ Dica: pense em como você pode fatorar essa expressão.
 
 ::: Gabarito
 
-Se você chegou em duas multiplicações, pense novamente! Ao fatorar a expressão da seguinte maneira: $$ x_0\cdot(x_0 - y_0) $$
+Ao fatorar a expressão da seguinte maneira: $$ x_0\cdot(x_0 - y_0) $$
 Nós reduzimos a equação a apenas uma multiplicação!
 
 :::
@@ -151,7 +165,7 @@ Nós reduzimos a equação a apenas uma multiplicação!
 Considerando que sabemos os valores de $x_0, x_1, y_0, y_1$. Qual é a quantidade mínima de multiplicações necessárias para calcular 
 $$ {\color{orange}x_0 \cdot y_0} + {\color{red}x_1 \cdot y_1} + {\color{magenta}x_0 \cdot y_1} + {\color{blue}x_1 \cdot y_0} $$
 
-Continue sem utilizar as operações atômicas, considere multiplicações normais.
+Continue sem utilizar as operações atômicas, considere apenas multiplicações.
 
 Dica: você precisará fazer três fatorações.
 
@@ -181,23 +195,14 @@ $$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{o
 
 ???
 
-??? Exercício
 Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = ({\color{red}x_1 \cdot y_1})\cdot 10^n + ({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
-Como poderíamos obter $x \cdot y$ a partir dos valores de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$?
-
-Dica: use o resultado do exercício anterior!
-
-::: Gabarito
+Note que poderíamos obter $x \cdot y$ a partir de apenas os valores de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$
 
 Do exercício anterior, sabemos que: $$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1} $$
 
 Substituindo então na expressão, temos que: $$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + (k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
 Sendo $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ 
-
-:::
-
-???
 
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
@@ -229,11 +234,9 @@ Na base, chegamos em números de apenas 1 algarismo, onde basta devolver o produ
 
 ??? Exercício
 
-Qual seria o valor h da altura da árvore?
+Qual a altura da árvore acima?
 
-!!! Dica
-Utilize potências de 2 no valor de n para facilitar a dedução.
-!!!
+Dica: pense qual seria a altura de uma árvore cujo n é uma potência de 2.
 
 ::: Gabarito
 
@@ -250,36 +253,36 @@ Sendo n = n. Teríamos $h = log_{2} n + 1$
 
 ??? Exercício
 
-No primeiro andar soma-se 1 vez n, no segundo andar 3 vezes n/2, no terceiro 9 vezes n/4, então qual é o termo do quinto andar
-e quantas vezes somamos ele? E no último andar dado a altura da árvore h?
+No primeiro andar soma-se 1 vez n, no segundo andar 3 vezes n/2, no terceiro 9 vezes n/4, então qual é o termo do quinto andar e quantas vezes somamos ele?
 
 ::: Gabarito
 
 No quinto andar teríamos que continuar dividindo por 2 o valor a ser somado, e multiplicar por 3 a quantidade de vezes que o somamos.
 Logo teríamos que somar 27 vezes n/8.
-Portanto, no último andar somaremos o termo $\frac{n}{2^{h-1}}$ um total de $3^{h-1}$ vezes.
 
 :::
 
 ???
 
-??? Exercício
-
-Agora que sabemos os termos iniciais e finais da soma do total de operações atômicas, qual é o tipo de progressão? Qual é o termo inicial, razão e
-total de termos?
-Ainda deixe em função de h.
-
-Dica: Escrever a soma ajuda a visualizar
-
-::: Gabarito
+A partir dessas informações, podemos escrever a soma do número de operações:
 
 $$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+ 3^{h-1} \cdot \frac{n}{2^{h-1}})$$
 
-Observamos uma PG de termo inicial n, razão 3/2 e um total de h termos, lembrando que $h = log_{2} n + 1$
+??? Exercício
+
+Qual é o tipo de progressãod dessa soma? Qual é o termo inicial, razão e o total de termos?
+Ainda deixe em função de h.
+
+::: Gabarito
+
+Temos uma PG de termo inicial n, razão 3/2 e um total de h termos, lembrando que $h = log_{2} n + 1$
 :::
 
 ???
 
+!!! Dica
+Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
+!!!
 
 ??? Exercício
 
@@ -289,12 +292,7 @@ $$S_{m} = \frac{a_{1}\cdot(q^{m}-1)}{(q-1)}$$
 $a_1$ é o termo inicial, $m$ o total de termos e $q$ a razão.  
 OBS: Você deve chegar em algo que possua $3^{log_{2}^{n}}$, simplifique qualquer outra potência de logarítmo que esteja elevando a própria base.
 
-!!! Dica
-Se precisar, pode relembrar as propriedades logarítmicas no site da matéria usando [este link](https://ensino.hashi.pro.br/desprog/resumo/analise/caixa.html).
-!!!
 ::: Gabarito
-
-
 
 $$ $$
 
@@ -330,6 +328,7 @@ $$ $$
 
 Queremos que o n saia do expoente, como podemos fazer isso utilizando as propriedades de logaritmos?
 
+Dica: faça uma mudança de base
 ::: Gabarito
 
 Através da propriedade de mudança de base temos:
