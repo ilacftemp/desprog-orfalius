@@ -196,18 +196,16 @@ $$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{o
 ???
 
 Relembrando da multiplicação que obtivemos pelo método da divisão: $$ x \cdot y = ({\color{red}x_1 \cdot y_1})\cdot 10^n + ({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
-Note que poderíamos obter $x \cdot y$ a partir de apenas os valores de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$
+Note que poderíamos obter $x \cdot y$ a partir de apenas os valores de k, ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$!
 
 Do exercício anterior, sabemos que: $$({\color{blue}x_1 \cdot y_0} + {\color{magenta}x_0 \cdot y_1}) = k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1} $$
 
 Substituindo então na expressão, temos que: $$ x \cdot y = ({\color{red}x_1 \cdot y_1}) \cdot 10^n + (k - {\color{orange}x_0 \cdot y_0} - {\color{red}x_1 \cdot y_1}) \cdot 10^{\frac{n}{2}} + {\color{orange}x_0 \cdot y_0} $$
 
-Sendo $$k = (x_0 + x_1)\cdot(y_0 + y_1)$$ 
-
 Dessa forma, conseguimos reduzir o cálculo de $x \cdot y$ a apenas 3 multiplicações em vez de 4!
 
 ??? Exercício
-Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$ e $y_0$ possuem $\frac{n}{2}$ dígitos e que produtos como ${\color{orange}x_0 \cdot y_0}$ não precisam ser realizados duas vezes quando já se sabe o valor?
+Qual seria o total de operações atômicas da equação nessa nova fórmula, considerando novamente que $x_0$, $x_1$, $y_0$ e $y_1$ possuem $\frac{n}{2}$ dígitos e que os produtos ${\color{orange}x_0 \cdot y_0}$ e ${\color{red}x_1 \cdot y_1}$ não precisam ser realizados duas vezes? Considere apenas as multiplicações.
 
 ::: Gabarito
 
@@ -270,7 +268,7 @@ $$(n+3\cdot\frac{n}{2}+9\cdot\frac{n}{4}+...+ 3^{h-1} \cdot \frac{n}{2^{h-1}})$$
 
 ??? Exercício
 
-Qual é o tipo de progressãod dessa soma? Qual é o termo inicial, razão e o total de termos?
+Qual é o tipo de progressão dessa soma? Qual é o termo inicial, razão e o total de termos?
 Ainda deixe em função de h.
 
 ::: Gabarito
@@ -349,10 +347,9 @@ $$ $$
 :::
 
 ???
+Aplicando as regras para o cálculo de complexidade, podemos concluir que a complexidade é: $$O(n^{log_{2}^{3}}) ≈ O(n^{1.58})$$
 
-
-
-Considerando que $2\cdot n$ é de menor relevância que $n^{log_{2}^{3}}$, pode-se concluir que a complexidade é $$O(n^{log_{2}^{3}}) ≈ O(n^{1.58})$$
+Ufa! Fomos de um algoritmo de complexidade $O(n^2)$ para $O(n^{1.58})$!
 
 Aplicações para o método de Karatsuba
 -------------------------------------
